@@ -33,8 +33,13 @@ export class PluginSystemLocalManager {
     }
 
     async localCacheInit() {
+       
+
         try {
             fs.statSync(pluginScriptPosition)
+            setTimeout(() => {
+                this.tryUpgrade();
+            }, 1000);
             return;
         } catch (e) {
             log('Plugin system not found');
@@ -45,7 +50,6 @@ export class PluginSystemLocalManager {
         }
         await this.createFile(pluginScriptPosition);
         await this.saveToLocal(pluginScriptPosition, script);
-
         setTimeout(() => {
             this.tryUpgrade();
         }, 1000);
