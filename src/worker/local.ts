@@ -1,10 +1,10 @@
-import { SCRIPT_URL, VERSION, VERSION_URL } from "../config";
+import { PLUGIN_SYS_ABS_PATH, SCRIPT_URL, VERSION, VERSION_URL } from "../config";
 import { log, reloadWindow } from "../util";
 
 const fs = window.require('fs');
 const path = window.require('path');
 
-const pluginScriptPosition = path.join(window.process.env.HOMEDRIVE, window.process.env.HOMEPATH, '.siyuan', 'plugin.js');
+const pluginScriptPosition = PLUGIN_SYS_ABS_PATH;
 
 export class PluginSystemLocalManager {
     saveToLocal(p: string, content: string) {
