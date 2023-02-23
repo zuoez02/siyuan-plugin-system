@@ -72,14 +72,7 @@ export class PluginSystemLocalManager {
     }
 
     async upgrade() {
-        try {
-            fs.statSync(pluginScriptPosition)
-            return;
-        } catch (e) {
-            log('Plugin system not found');
-        }
         const script = await fetch(SCRIPT_URL, { cache: 'no-cache' }).then((res) => res.text());
-        console.log(script);
         if (!script) {
             return;
         }
