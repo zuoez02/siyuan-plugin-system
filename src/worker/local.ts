@@ -58,6 +58,8 @@ export class PluginSystemLocalManager {
             log('Online Version: ' + onlineVersion + ', local version: ' + VERSION);
             log('Downloading new version of Plugin System')
             this.upgrade();
+        } else {
+            log('Version is ' + VERSION + ', OK')
         }
     }
 
