@@ -30,7 +30,7 @@ export function createFile(p: string) {
     })
 }
 
-export async function init() {
+export async function localCacheInit() {
     try {
         fs.statSync(pluginScriptPosition)
         return;
