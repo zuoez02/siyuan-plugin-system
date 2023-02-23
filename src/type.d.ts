@@ -7,6 +7,7 @@ declare global {
     interface Window {
         siyuan: any;
         require: any;
-        pluginSystem: any;
+        pluginSystem?: any;
+        siyuanPluginScript?: string;
     }
 }
