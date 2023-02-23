@@ -21,7 +21,6 @@ export class PluginLoader {
         for (const p of plugins) {
             await this.loadPlugin(p);
         }
-        plugins?.forEach(await this.loadPlugin);
     }
 
     async loadPlugin(plugin: IPlugin) {
