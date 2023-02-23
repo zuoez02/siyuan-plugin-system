@@ -1,0 +1,1 @@
+console.log('Siyuan Plugin System loading...');

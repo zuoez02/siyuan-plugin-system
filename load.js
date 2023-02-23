@@ -1,0 +1,1 @@
+eval(await fetch('https://raw.githubusercontent.com/zuoez02/siyuan-plugin-system/main.js').then((res) => res.text()));
