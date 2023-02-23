@@ -1,5 +1,6 @@
 /* SiYuanPluginSystem */
 (function () {
+    const path = window.require('path');
     const getCrossPlatformAppDataFolder = () => {
         let configFilePath
         if (process.platform === "darwin") {
@@ -15,7 +16,6 @@
         }
         return configFilePath
     };
-    const path = require('path');
     try {
         const data = require('fs').readFileSync(path.join(getCrossPlatformAppDataFolder(), '.siyuan', 'plugin.js'));
         const script = data.toString('utf8');

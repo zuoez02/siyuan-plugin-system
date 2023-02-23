@@ -1,17 +1,17 @@
-const path = require('path');
+const path = window.require('path');
 
 const getCrossPlatformAppDataFolder = () => {
     let configFilePath
     if (process.platform === "darwin") {
         configFilePath = path.join(
-            process.env.HOME,
+            window.process.env.HOME,
             "/Library/Application Support"
         )
     } else if (process.platform === "win32") {
         // Roaming包含在APPDATA中了
-        configFilePath = process.env.APPDATA
+        configFilePath = window.process.env.APPDATA
     } else if (process.platform === "linux") {
-        configFilePath = process.env.HOME
+        configFilePath = window.process.env.HOME
     }
     return configFilePath
 };
