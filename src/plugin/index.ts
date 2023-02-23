@@ -9,5 +9,6 @@ export class PluginSystem {
 
     init() {
         this.pluginLoader.loadAllLocalPlugins();
+        return this;
     }
 }

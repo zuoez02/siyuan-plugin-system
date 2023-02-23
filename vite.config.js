@@ -1,4 +1,5 @@
 // vite.config.js
+import packageJson from './package.json';
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 

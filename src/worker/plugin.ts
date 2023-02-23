@@ -1,5 +1,5 @@
-import { Plugin } from "../plugin/plugin";
 import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
+import { error, log } from "../util";
 
 const fs = window.require('fs');
 const path = window.require('path');
@@ -37,7 +37,7 @@ export const getManifest = async (manifest: string) => {
     try {
         return JSON.parse(content);
     } catch (e) {
-        console.error('loading manifest: ' + manifest, e);
+        error('loading manifest: ' + manifest, e);
     }
 }
 
@@ -48,12 +48,12 @@ export const getScript = async (script: string) => {
 export const getAllPlugins = async () => {
     const plugins = await scanPlugins(path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
     if (!plugins || !plugins.length) {
-        console.info("No plugin found in " + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
+        log("No plugin found in " + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
         return;
     }
     const result: any[] = [];
     for (const p of plugins) {
-        console.log('Loading plugin: ' + p);
+        log('Loading plugin: ' + p);
         const [manifest, script] = await Promise.all([getManifest(path.join(p, MANIFEST)),getScript(path.join(p, SCRIPT))]);
         result.push({ ...manifest, script });
     }

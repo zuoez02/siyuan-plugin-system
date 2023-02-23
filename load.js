@@ -1,4 +1,4 @@
-/* loadLocal */
+/* SiYuanPluginSystem */
 (function () {
     const path = require('path');
     try {
