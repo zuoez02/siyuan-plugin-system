@@ -9,7 +9,7 @@
 
     } catch (e) {
         console.log('local plugin system not found, load online');
-        return fetch('https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/main.js').then((res) => res.text()).then((sc) => {
+        return fetch('https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/main.js', { cache: 'no-cache'}).then((res) => res.text()).then((sc) => {
             window.siyuanPluginScript = sc;
             eval(sc);
         });
