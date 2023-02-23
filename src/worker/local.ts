@@ -1,5 +1,5 @@
 import { SCRIPT_URL, VERSION, VERSION_URL } from "../config";
-import { log } from "../util";
+import { log, reloadWindow } from "../util";
 
 const fs = window.require('fs');
 const path = window.require('path');
@@ -84,5 +84,7 @@ export class PluginSystemLocalManager {
         }
         await this.createFile(pluginScriptPosition);
         await this.saveToLocal(pluginScriptPosition, script);
+        log('Plugin system upgraded, reloading...');
+        setTimeout(() => reloadWindow(), 3000);
     }
 }

@@ -3,3 +3,5 @@ export const log = (...p) => {
 };
 
 export const error = (...p) => console.error(`[Plugin System] `, ...p);
+
+export const reloadWindow = () => window.location.reload();
