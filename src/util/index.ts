@@ -1,4 +1,6 @@
-const path = window.require('path');
+import { PROCESS_ENV } from "../config";
+
+const path = require('path');
 
 export const log = (...p) => {
     console.log(`[Plugin System] `, ...p)
@@ -12,14 +14,14 @@ export const getCrossPlatformAppDataFolder = () => {
     let configFilePath
     if (process.platform === "darwin") {
         configFilePath = path.join(
-            window.process.env.HOME,
+            PROCESS_ENV.HOME,
             "/Library/Application Support"
         )
     } else if (process.platform === "win32") {
         // Roaming包含在APPDATA中了
-        configFilePath = window.process.env.APPDATA
+        configFilePath = PROCESS_ENV.APPDATA
     } else if (process.platform === "linux") {
-        configFilePath = window.process.env.HOME
+        configFilePath = PROCESS_ENV.HOME
     }
     return configFilePath
 };

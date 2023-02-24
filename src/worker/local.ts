@@ -1,8 +1,8 @@
 import { PLUGIN_SYS_ABS_PATH, SCRIPT_URL, VERSION, VERSION_URL } from "../config";
 import { log, reloadWindow } from "../util";
 
-const fs = window.require('fs');
-const path = window.require('path');
+const fs = require('fs');
+const path = require('path');
 
 const pluginScriptPosition = PLUGIN_SYS_ABS_PATH;
 

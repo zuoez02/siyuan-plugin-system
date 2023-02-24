@@ -1,6 +1,6 @@
 /* SiYuanPluginSystem */
 (function () {
-    const path = window.require('path');
+    const path = require('path');
     const getCrossPlatformAppDataFolder = () => {
         let configFilePath
         if (process.platform === "darwin") {

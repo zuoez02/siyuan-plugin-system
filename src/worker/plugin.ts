@@ -1,8 +1,8 @@
 import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
 import { error, log } from "../util";
 
-const fs = window.require('fs');
-const path = window.require('path');
+const fs = require('fs');
+const path = require('path');
 
 export const MANIFEST = 'manifest.json';
 

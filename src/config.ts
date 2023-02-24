@@ -1,10 +1,16 @@
-const path = window.require('path');
+import { getCrossPlatformAppDataFolder } from './util';
+
+const path = require('path');
+
+export const PROCESS = window.process;
+
+export const PROCESS_ENV = window.process.env;
 
 export const SIYUAN_DATA_PATH = window.siyuan.config.system.dataDir;
 
 export const PLUGIN_FOLDER = 'plugins';
 
-export const VERSION = 'v0.2.0';
+export const VERSION = 'v0.2.1';
 
 export const VERSION_URL = 'https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/VERSION';
 
