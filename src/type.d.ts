@@ -15,6 +15,7 @@ declare global {
     }
 
     interface Window {
+        theme?: any;
         siyuan: any;
         require: any;
         pluginSystem?: any;

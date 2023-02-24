@@ -1,8 +1,8 @@
 {
   "name": "siyuan-plugin-system",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "scripts": {
-    "build": "vite build && mv dist/assets/main*.js dist/assets/main.js && cp dist/assets/main.js main.js"
+    "build": "node build.js"
   },
   "devDependencies": {
     "@types/node": "^18.14.1"
