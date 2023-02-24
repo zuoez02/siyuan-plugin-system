@@ -1,11 +1,7 @@
 import * as serverApi from '../worker/server-api';
+import * as clientApi from '../worker/client-api';
 
 export const apiGenerate = () => ({
-    addToolbarLeft: () => {
-        console.log('add toolbar left');
-    },
-    addToolbarRight: () => {
-        console.log('add toolbar right');
-    },
+    clientApi,
     serverApi,
 });

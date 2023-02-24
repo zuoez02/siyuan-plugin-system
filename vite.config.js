@@ -20,5 +20,8 @@ export default defineConfig({
                 name: 'main',
             }
         },
+        //构建后是否生成 source map 文件
+        sourcemap: false,
+        minify: "terser", //terser 构建后文件体积更小
     },
 })
