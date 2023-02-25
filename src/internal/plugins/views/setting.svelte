@@ -1,5 +1,24 @@
 <script lang="ts">
     import SettingCommon from "./setting-common.svelte";
+    import SettingList from "./setting-list.svelte";
+    const menus = [
+        {
+            key: "common",
+            name: "通用配置",
+            icon: "#iconSettings",
+            component: SettingCommon,
+        },
+        {
+            key: "list",
+            name: "插件列表",
+            icon: "#iconSettings",
+            component: SettingList,
+        },
+    ];
+
+    const setCurrentSelection = (menu) => (currentSelection = menu);
+
+    let currentSelection = menus[0];
 </script>
 
 <main>
@@ -12,23 +31,27 @@
                 class="b3-tab-bar b3-list b3-list--background"
                 style="height: unset !important;"
             >
-                <li
-                    data-name="editor"
-                    class="b3-list-item--focus b3-list-item b3-list-item--big"
-                >
-                    <svg class="b3-list-item__graphic"
-                        ><use xlink:href="#iconEdit" /></svg
-                    ><span class="b3-list-item__text"
-                        >通用配置</span
+                {#each menus as menu}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <li
+                        data-name={menu.key}
+                        class={currentSelection.key === menu.key
+                            ? "b3-list-item--focus b3-list-item b3-list-item--big"
+                            : "b3-list-item b3-list-item--big"}
+                        on:click={() => setCurrentSelection(menu)}
                     >
-                </li>
+                        <svg class="b3-list-item__graphic"
+                            ><use xlink:href={menu.icon} /></svg
+                        ><span class="b3-list-item__text">{menu.name}</span>
+                    </li>
+                {/each}
             </ul>
             <div
                 class="b3-tab-container"
                 style="height: unset !important;"
-                data-name="setting"
+                data-name={currentSelection.key}
             >
-                <SettingCommon />
+                <svelte:component this={currentSelection.component} />
             </div>
         </div>
     </div>

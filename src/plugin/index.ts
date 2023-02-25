@@ -12,17 +12,28 @@ export class PluginSystem {
     storageManager: StorageManager;
     storageManagerProvider: () => Promise<StorageManager>;
 
-    constructor(@inject(TYPES.PluginSystemLocalManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider) {
-        this.pluginLoader = new PluginLoader();
+    constructor(@inject(TYPES.PluginLoader) pluginLoader, @inject(TYPES.PluginSystemLocalManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider) {
+        this.pluginLoader = pluginLoader;
         this.pslm = pluginSystemLocalManager;
         this.storageManagerProvider = storageManagerProvider;
     }
 
     async init() {
         this.storageManager = await this.storageManagerProvider();
-        this.pluginLoader.loadAllInternalPlugins();
-        this.pluginLoader.loadAllLocalPlugins();
+        const plugins = this.storageManager.getPlugins();
+        this.pluginLoader.loadEnabledPlugins(plugins);
         this.pslm.localCacheInit();
         return this;
+    }
+
+    async loadPlugin(key: string) {
+        this.storageManager.setPluginEnabled(key, true);
+        const plugin = this.storageManager.getPluginByKey(key);
+        this.pluginLoader.loadPlugin(plugin);
+    }
+
+    async unloadPlugin(key: string) {
+        this.storageManager.setPluginEnabled(key, false);
+        this.pluginLoader.unloadPlugin(key);
     }
 }

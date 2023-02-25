@@ -5,14 +5,28 @@ import { getAllPlugins } from "../worker/plugin";
 import { IPlugin } from "../type";
 import { internalPlugins } from "../internal";
 import { log } from "../util";
+import { injectable } from "inversify";
 
 let components: { [key: string]: any };
 
+@injectable()
 export class PluginLoader {
-    plugins: Map<string, Plugin>;
+    loadedPlugins: Map<string, Plugin>;
 
     constructor() {
-        this.plugins = new Map();
+        this.loadedPlugins = new Map();
+    }
+
+    async loadEnabledPlugins(plugins: IPlugin[]) {
+        if (!plugins || !plugins.length) {
+            return;
+        }
+        for (const p of plugins) {
+            if (!p.enabled) {
+                break;
+            }
+            await this.loadPlugin(p);
+        };
     }
 
     async loadAllInternalPlugins() {
@@ -23,7 +37,7 @@ export class PluginLoader {
             }
             log(`Load internal plugin: ${p.key}(${p.name})`);
             plug.onload();
-            this.plugins.set(p.key, plug);
+            this.loadedPlugins.set(p.key, plug);
         })
     }
 
@@ -41,6 +55,20 @@ export class PluginLoader {
         if (!components) {
             this.generateRequiredModules();
         }
+        if (!plugin.enabled || (!plugin.plugin && !plugin.script)) {
+            return;
+        }
+        if (plugin.plugin) {
+            // internal plugin
+            const plug = new plugin.plugin();
+            if (!(plug instanceof Plugin)) {
+                throw new Error(`Failed to load plugin ${plugin.name}`);
+            }
+            log(`Load internal plugin: ${plugin.key}(${plugin.name})`);
+            await plug.onload();
+            this.loadedPlugins.set(plugin.key, plug);
+            return;
+        }
         const exports: { [key: string]: any } = {};
         const module = { exports };
         function run(script: string, name: string) {
@@ -52,8 +80,8 @@ export class PluginLoader {
             }
             throw new Error(`module ${name} not found`);
         };
-        const pluginName = plugin.name;
-        run(plugin.script, plugin.name)(__require, module, exports);
+        const pluginName = plugin.key;
+        run(plugin.script, plugin.key)(__require, module, exports);
         let pluginConstructor;
         if (!(pluginConstructor = (module.exports || exports).default || module.exports)) {
             throw new Error(`Failed to load plugin ${pluginName}. No exports detected.`);
@@ -62,18 +90,17 @@ export class PluginLoader {
         if (!(plug instanceof Plugin)) {
             throw new Error(`Failed to load plugin ${pluginName}`);
         }
-
         plug.onload();
-        this.plugins.set(pluginName, plug);
+        this.loadedPlugins.set(plugin.key, plug);
     }
 
-    async unloadPlugin(pluginName: string) {
-        const plugin = this.plugins.get(pluginName);
+    async unloadPlugin(key: string) {
+        const plugin = this.loadedPlugins.get(key);
         if (!plugin) {
             return;
         }
         await plugin.onunload();
-        this.plugins.delete(pluginName);
+        this.loadedPlugins.delete(key);
     }
 
     generateRequiredModules() {

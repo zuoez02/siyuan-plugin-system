@@ -55,7 +55,7 @@ export const getAllPlugins = async () => {
     for (const p of plugins) {
         log('Loading plugin: ' + p);
         const [manifest, script] = await Promise.all([getManifest(path.join(p, MANIFEST)),getScript(path.join(p, SCRIPT))]);
-        result.push({ ...manifest, script });
+        result.push({ ...manifest, script, enalbed: false, key: path.dirname(p) });
     }
     return result;
 }
