@@ -2,19 +2,19 @@
 (function () {
     const path = require('path');
     const getCrossPlatformAppDataFolder = () => {
-        let configFilePath
+        let configFilePath;
         if (process.platform === "darwin") {
             configFilePath = path.join(
                 process.env.HOME,
                 "/Library/Application Support"
-            )
+            );
         } else if (process.platform === "win32") {
             // Roaming包含在APPDATA中了
-            configFilePath = process.env.APPDATA
+            configFilePath = process.env.APPDATA;
         } else if (process.platform === "linux") {
-            configFilePath = process.env.HOME
+            configFilePath = process.env.HOME;
         }
-        return configFilePath
+        return configFilePath;
     };
     try {
         const data = require('fs').readFileSync(path.join(getCrossPlatformAppDataFolder(), '.siyuan', 'plugin.js'));
