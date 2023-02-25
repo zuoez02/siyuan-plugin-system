@@ -52,6 +52,9 @@ export class Menu {
     }
 }
 
+/**
+ * Copy from siyuan source code
+ */
 export class MenuItem {
     public element: HTMLElement;
 
