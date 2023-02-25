@@ -1,4 +1,5 @@
 import { config } from '../config';
+import { genUUID } from '../util';
 
 export async function request(url, data) {
     let resData = null;
@@ -16,7 +17,6 @@ export async function request(url, data) {
 
 export async function parseBody(response) {
     let r = await response;
-    // console.log(r)
     return r.code === 0 ? r.data : null;
 }
 
@@ -49,7 +49,6 @@ export async function getAnchor(anchorText, name) {
     anchorText = anchorText.replace('((', '').replace('))', '');
     let sqlScript = `select * from blocks where id = '${anchorText}'`;
     let sqlRes = await sql(sqlScript);
-    //  console.log ("sqlRes",sqlRes)
     let anchor = '';
     if (sqlRes) {
         try {
@@ -480,4 +479,19 @@ export async function pushErrMsg(message = null, text = null, timeout = 7000) {
         timeout: timeout,
     };
     return parseBody(request(url, data));
+}
+
+export async function setStorageVal(key: string, val: any) {
+    const url = "/api/storage/setLocalStorageVal";
+    const data = {
+        app: genUUID(),
+        key,
+        val,
+    };
+    return parseBody(request(url, data));
+}
+
+export async function getLocalStorage() {
+    const url = "/api/storage/getLocalStorage";
+    return parseBody(request(url, null));
 }

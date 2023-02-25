@@ -3,6 +3,8 @@ import { apiGenerate } from "./api";
 import { modules } from "./module";
 import { getAllPlugins } from "../worker/plugin";
 import { IPlugin } from "../type";
+import { internalPlugins } from "../internal";
+import { log } from "../util";
 
 let components: { [key: string]: any };
 
@@ -11,6 +13,18 @@ export class PluginLoader {
 
     constructor() {
         this.plugins = new Map();
+    }
+
+    async loadAllInternalPlugins() {
+        internalPlugins.forEach((p) => {
+            const plug = new p.plugin();
+            if (!(plug instanceof Plugin)) {
+                throw new Error(`Failed to load plugin ${p.name}`);
+            }
+            log(`Load internal plugin: ${p.key}(${p.name})`);
+            plug.onload();
+            this.plugins.set(p.key, plug);
+        })
     }
 
     async loadAllLocalPlugins() {

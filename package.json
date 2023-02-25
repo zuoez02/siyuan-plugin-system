@@ -1,14 +1,20 @@
 {
   "name": "siyuan-plugin-system",
   "version": "0.3.1",
+  "type": "module",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.cjs",
+    "dev": "node tools/update-dev.cjs"
   },
   "devDependencies": {
     "@types/node": "^18.14.1",
     "terser": "^5.16.5"
   },
   "dependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13",
+    "svelte": "^3.55.1",
     "vite": "^4.1.4"
   }
 }

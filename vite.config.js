@@ -1,9 +1,10 @@
 // vite.config.js
-import packageJson from './package.json';
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
 
 export default defineConfig({
+    plugins: [svelte()],
     lib: {
         // Could also be a dictionary or array of multiple entry points
         entry: resolve(__dirname, 'src/index.js'),

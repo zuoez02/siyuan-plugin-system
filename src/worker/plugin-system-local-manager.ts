@@ -1,12 +1,23 @@
 import { PLUGIN_SYS_ABS_PATH, SCRIPT_URL, VERSION, VERSION_URL } from "../config";
+import { TYPES } from "../types";
 import { log, reloadWindow } from "../util";
+import { StorageManager } from '../plugin/storage-manager';
+import { inject, injectable } from "inversify";
+import { PLUGIN_SYSTEM_AUTO_UPDATE } from "../plugin/config";
 
 const fs = require('fs');
 const path = require('path');
 
 const pluginScriptPosition = PLUGIN_SYS_ABS_PATH;
 
+@injectable()
 export class PluginSystemLocalManager {
+    storageMangager: StorageManager;
+
+    constructor(@inject(TYPES.StorageManager) storageManager) {
+        this.storageMangager = storageManager;
+    }
+
     saveToLocal(p: string, content: string) {
         return new Promise((resolve, reject) => {
             const { writeFile } = fs;
@@ -33,13 +44,9 @@ export class PluginSystemLocalManager {
     }
 
     async localCacheInit() {
-       
-
         try {
             fs.statSync(pluginScriptPosition)
-            setTimeout(() => {
-                this.tryUpgrade();
-            }, 1000);
+            this.delayAutoUpgrade();
             return;
         } catch (e) {
             log('Plugin system not found');
@@ -50,8 +57,17 @@ export class PluginSystemLocalManager {
         }
         await this.createFile(pluginScriptPosition);
         await this.saveToLocal(pluginScriptPosition, script);
+        this.delayAutoUpgrade();
+    }
+
+    delayAutoUpgrade() {
         setTimeout(() => {
-            this.tryUpgrade();
+            const autoUpdate = this.storageMangager.get(PLUGIN_SYSTEM_AUTO_UPDATE);
+            if (!autoUpdate) {
+                log('Auto Update skipped')
+            } else {
+                this.tryUpgrade();
+            }
         }, 1000);
     }
 
