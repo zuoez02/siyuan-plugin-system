@@ -3,6 +3,7 @@
     import { container } from "../../../../container";
     import { TYPES } from "../../../../config";
     import { IPluginSystem, IStorageManager, PluginManifest } from "../../../../types";
+    import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from "../../../../plugin/plugin-config";
 
     const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
     const pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem);
@@ -17,8 +18,12 @@
     };
 
     const onPluginEnabledChange = (key: string) => async (event) => {
+        const safeMode = storageManager.get(PLUGIN_SYSTEM_SAFE_MODE_ENABLED);
         const checked = event.target.checked;
         await storageManager.setPluginEnabled(key, checked);
+        if (safeMode) {
+            return;
+        }
         if (checked) {
             pluginSystem.loadPlugin(key);
         } else {

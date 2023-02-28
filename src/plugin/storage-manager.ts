@@ -1,20 +1,21 @@
 import { inject, injectable } from "inversify";
 import { getLocalStorage, setStorageVal } from "../api/server-api";
-import { defaultConfig, PLUGIN_SYSTEM_PLUGIN } from "./plugin-config";
+import { defaultConfig, PLUGIN_SYSTEM_PLUGIN, PLUGIN_SYSTEM_SAFE_MODE_ENABLED, PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN } from "./plugin-config";
 import { internalPlugins } from "../internal";
-import { PluginFileManager } from "./plugin-file-manager";
 import { TYPES } from "../config";
-import { IStorageManager, PluginManifest } from "../types";
+import { IPluginFileManager, IStorageManager, PluginConfig, PluginEnableConfig, PluginManifest } from "../types";
 
 @injectable()
 export class StorageManager implements IStorageManager {
-    private pluginFileManager: PluginFileManager;
+    private pluginFileManager: IPluginFileManager;
 
-    private config: any;
+    private config: PluginConfig;
 
-    private initialized;
+    private initialized: boolean;
 
-    private plugins: PluginManifest[];
+    private internalPlugins: PluginManifest[];
+
+    private thirdPartyPlugins: PluginManifest[];
 
     constructor(@inject(TYPES.PluginFileManager) pluginFileManager) {
         this.config = Object.assign({}, defaultConfig);
@@ -45,34 +46,58 @@ export class StorageManager implements IStorageManager {
             }
         }
         // load all plugins
-        const outsidePlugins = await this.pluginFileManager.getAllPlugins();
-        const plugins = [...internalPlugins, ...outsidePlugins];
-        const enabledPlugins = this.get(PLUGIN_SYSTEM_PLUGIN) as [{ key: string, enabled: boolean }];
-        for (const ep of enabledPlugins) {
-            for (const p of plugins) {
-                if (p.key === ep.key) {
-                    p.enabled = ep.enabled || false;
-                    break;
-                }
-            }
-        }
-        this.plugins = plugins;
+        this.thirdPartyPlugins = await this.pluginFileManager.getAllPlugins();
+        this.internalPlugins = [...internalPlugins];
+        this.init3rdPartyEnabled();
+        this.initInternalEnabled();    
         await this.savePluginsEnabled();
 
         this.initialized = true;
         return this;
     }
 
+    private init3rdPartyEnabled() {
+        const enabledPlugins = this.get(PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN) as PluginEnableConfig[];
+        for (const ep of enabledPlugins) {
+            for (const p of this.thirdPartyPlugins) {
+                if (p.key === ep.key) {
+                    p.enabled = ep.enabled || false;
+                    break;
+                }
+            }
+        }
+    }
+
+    private initInternalEnabled() {
+        const enabledPlugins = this.get(PLUGIN_SYSTEM_PLUGIN) as PluginEnableConfig[];
+        for (const ep of enabledPlugins) {
+            for (const p of this.internalPlugins) {
+                if (p.key === ep.key) {
+                    p.enabled = ep.enabled || false;
+                    break;
+                }
+            }
+        }
+    }
+
     public getPlugins() {
-        return this.plugins;
+        return [...this.internalPlugins, ...this.thirdPartyPlugins];
+    }
+
+    public getInternalPlugins() {
+        return this.internalPlugins;
+    }
+
+    public getThirdPartyPlugins() {
+        return this.thirdPartyPlugins;
     }
 
     public getPluginByKey(key) {
-        return this.plugins.find((p) => p.key === key);
+        return this.getPlugins().find((p) => p.key === key);
     }
 
     public async setPluginEnabled(key: string, enabled: boolean) {
-        for (const p of this.plugins) {
+        for (const p of [...this.internalPlugins, ...this.thirdPartyPlugins]) {
             if (p.key === key) {
                 p.enabled = enabled;
                 break;
@@ -81,7 +106,12 @@ export class StorageManager implements IStorageManager {
         await this.savePluginsEnabled();
     }
 
+    public async setSafeModeEnabled(enabled: boolean) {
+        return this.set(PLUGIN_SYSTEM_SAFE_MODE_ENABLED, enabled);
+    }
+
     public async savePluginsEnabled() {
-        this.set(PLUGIN_SYSTEM_PLUGIN, this.plugins.map((p) => ({ key: p.key, enabled: p.enabled })));
+        await this.set(PLUGIN_SYSTEM_PLUGIN, this.internalPlugins.map((p) => ({ key: p.key, enabled: p.enabled })));
+        return this.set(PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN, this.thirdPartyPlugins.map((p) => ({ key: p.key, enabled: p.enabled })));
     }
 }

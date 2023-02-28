@@ -1,11 +1,10 @@
 import { Plugin } from "../api/plugin";
 import { apiGenerate } from "./api-generate";
 import { modules } from "./module";
-import { IPlugin, IPluginLoader, PluginManifest } from "../types";
+import { IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from "../types";
 import { internalPlugins } from "../internal";
 import { log } from "../util";
 import { inject, injectable } from "inversify";
-import { PluginFileManager } from "./plugin-file-manager";
 import { TYPES } from "../config";
 
 let components: { [key: string]: any };
@@ -13,7 +12,7 @@ let components: { [key: string]: any };
 @injectable()
 export class PluginLoader implements IPluginLoader {
 
-    pluginFileManager: PluginFileManager;
+    pluginFileManager: IPluginFileManager;
 
     loadedPlugins: Map<string, IPlugin>;
 
@@ -28,7 +27,7 @@ export class PluginLoader implements IPluginLoader {
         }
         for (const p of plugins) {
             if (!p.enabled) {
-                break;
+                continue;
             }
             await this.loadPlugin(p);
         };
@@ -106,6 +105,18 @@ export class PluginLoader implements IPluginLoader {
         }
         await plugin.onunload();
         this.loadedPlugins.delete(key);
+    }
+
+    async unloadThirdPartyPlugins(plugins: PluginManifest[]) {
+        const keys = plugins.filter((p) => p.enabled).map(p => p.key);
+        for (const k of keys) {
+            log(`unload third party plugin: ${k}`);
+            await this.unloadPlugin(k);
+        }
+    }
+
+    async loadThirdPartyEnabledPlugins(plugins: PluginManifest[]) {
+        return this.loadEnabledPlugins(plugins);
     }
 
     generateRequiredModules() {

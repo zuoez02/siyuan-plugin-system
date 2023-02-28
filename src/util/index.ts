@@ -1,6 +1,8 @@
+import { Stats } from "fs";
 import { PROCESS_ENV } from "../config";
 
 const path = require('path');
+const fs = require('fs');
 
 export const log = (...p) => {
     console.log(`[Plugin System] `, ...p)
@@ -33,3 +35,16 @@ export const getCrossPlatformAppDataFolder = () => {
 export const genUUID = () => ([1e7].toString() + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
     (parseInt(c, 10) ^ (window.crypto.getRandomValues(new Uint32Array(1))[0] & (15 >> (parseInt(c, 10) / 4)))).toString(16)
 );
+
+export function isDir(p: string) {
+    return fs.statSync(p).isDirectory();
+}
+
+export function isExists(p: string) {
+    try {
+        fs.statSync(p) as Stats;
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

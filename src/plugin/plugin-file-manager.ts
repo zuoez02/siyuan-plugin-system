@@ -1,7 +1,8 @@
+import { Stats } from 'fs';
 import { injectable } from 'inversify';
 import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
 import { PluginManifest } from '../types';
-import { error, log } from "../util";
+import { error, isDir, isExists, log } from "../util";
 
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +20,9 @@ export class PluginFileManager {
                     reject(err);
                     return;
                 }
-                resolve(files.map((f) => path.resolve(pluginFolder, f)));
+                resolve(files.filter((f) => {
+                    return isDir(path.join(pluginFolder, f)) && isExists(path.join(pluginFolder, f, MANIFEST)) && isExists(path.join(pluginFolder, f, SCRIPT));
+                })?.map((g) => path.resolve(pluginFolder, g)) || []);
             })
         });
     }
@@ -53,14 +56,14 @@ export class PluginFileManager {
         const plugins = await this.scanPlugins(path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
         if (!plugins || !plugins.length) {
             log("No plugin found in " + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
-            return;
+            return [];
         }
         const result: PluginManifest[] = [];
         for (const p of plugins) {
             log('Loading plugin: ' + p);
             const [manifest, script] = await Promise.all([this.getManifest(path.join(p, MANIFEST)), this.getScript(path.join(p, SCRIPT))]);
-            result.push({ ...manifest, script, enalbed: false, key: path.basename(p) });
+            result.push({ ...manifest, script, enabled: false, key: path.basename(p) });
         }
-        return result;
+        return result || [];
     }
 }

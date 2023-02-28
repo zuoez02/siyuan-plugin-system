@@ -1,3 +1,5 @@
+import { ISettingTab } from "../types";
+
 function insertBefore(positionEl: Element, el: Element) {
     return positionEl.insertAdjacentElement('beforebegin', el)
 }
@@ -20,4 +22,9 @@ export function addToolbarRight(el: Element) {
         return;
     }
     insertAfter(title[0], el);
+}
+
+
+export function addSettingTab(settingTab: ISettingTab) {
+    
 }
