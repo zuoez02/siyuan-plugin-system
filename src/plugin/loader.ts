@@ -1,7 +1,7 @@
 import { Plugin } from "../api/plugin";
 import { apiGenerate } from "./api-generate";
 import { modules } from "./module";
-import { IPlugin } from "../type";
+import { IPlugin, IPluginLoader, PluginManifest } from "../types";
 import { internalPlugins } from "../internal";
 import { log } from "../util";
 import { inject, injectable } from "inversify";
@@ -11,18 +11,18 @@ import { TYPES } from "../config";
 let components: { [key: string]: any };
 
 @injectable()
-export class PluginLoader {
+export class PluginLoader implements IPluginLoader {
 
     pluginFileManager: PluginFileManager;
 
-    loadedPlugins: Map<string, Plugin>;
+    loadedPlugins: Map<string, IPlugin>;
 
     constructor(@inject(TYPES.PluginFileManager) pluginFileManager) {
         this.pluginFileManager = pluginFileManager;
         this.loadedPlugins = new Map();
     }
 
-    async loadEnabledPlugins(plugins: IPlugin[]) {
+    async loadEnabledPlugins(plugins: PluginManifest[]) {
         if (!plugins || !plugins.length) {
             return;
         }
@@ -56,7 +56,7 @@ export class PluginLoader {
         }
     }
 
-    async loadPlugin(plugin: IPlugin) {
+    async loadPlugin(plugin: PluginManifest) {
         if (!components) {
             this.generateRequiredModules();
         }

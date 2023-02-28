@@ -4,6 +4,7 @@ import { log, reloadWindow } from "../util";
 import { StorageManager } from './storage-manager';
 import { inject, injectable } from "inversify";
 import { PLUGIN_SYSTEM_AUTO_UPDATE } from "./plugin-config";
+import { ISystemManager } from "../types";
 
 const fs = require('fs');
 const path = require('path');
@@ -11,28 +12,28 @@ const path = require('path');
 const pluginScriptPosition = PLUGIN_SYS_ABS_PATH;
 
 @injectable()
-export class SystemManager {
+export class SystemManager implements ISystemManager {
     storageMangager: StorageManager;
 
     constructor(@inject(TYPES.StorageManager) storageManager) {
         this.storageMangager = storageManager;
     }
 
-    saveToLocal(p: string, content: string) {
-        return new Promise((resolve, reject) => {
+    public async saveToLocal(p: string, content: string) {
+        return new Promise<void>((resolve, reject) => {
             const { writeFile } = fs;
             const { Buffer } = require('buffer');
             const data = new Uint8Array(Buffer.from(content));
             writeFile(p, data, (err) => {
                 if (err) return reject(err);
-                resolve('The file has been saved!');
+                resolve();
             });
         })
 
     }
 
     createFile(p: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<string>((resolve, reject) => {
             fs.mkdir(path.dirname(p),
                 { recursive: true }, (err) => {
                     if (err) {

@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
+import { PluginManifest } from '../types';
 import { error, log } from "../util";
 
 const fs = require('fs');
@@ -48,13 +49,13 @@ export class PluginFileManager {
         return await this.getFileContent(script);
     }
 
-    async getAllPlugins() {
+    async getAllPlugins(): Promise<PluginManifest[]> {
         const plugins = await this.scanPlugins(path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
         if (!plugins || !plugins.length) {
             log("No plugin found in " + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
             return;
         }
-        const result: any[] = [];
+        const result: PluginManifest[] = [];
         for (const p of plugins) {
             log('Loading plugin: ' + p);
             const [manifest, script] = await Promise.all([this.getManifest(path.join(p, MANIFEST)), this.getScript(path.join(p, SCRIPT))]);

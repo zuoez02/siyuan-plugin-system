@@ -4,15 +4,16 @@ import { SystemManager } from "./system-manager";
 import { PluginLoader } from "./loader";
 import { StorageManager } from './storage-manager';
 import { TYPES } from '../config';
+import { IPluginSystem } from "../types";
 
 @injectable()
-export class PluginSystem {
+export class PluginSystem implements IPluginSystem {
     pluginLoader: PluginLoader;
     pslm: SystemManager;
     storageManager: StorageManager;
     storageManagerProvider: () => Promise<StorageManager>;
 
-    constructor(@inject(TYPES.PluginLoader) pluginLoader, @inject(TYPES.PluginSystemLocalManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider) {
+    constructor(@inject(TYPES.PluginLoader) pluginLoader, @inject(TYPES.SystemManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider) {
         this.pluginLoader = pluginLoader;
         this.pslm = pluginSystemLocalManager;
         this.storageManagerProvider = storageManagerProvider;

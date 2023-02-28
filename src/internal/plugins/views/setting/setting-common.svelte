@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { StorageManager } from "../../../plugin/storage-manager";
-  import { PLUGIN_SYSTEM_AUTO_UPDATE } from "../../../plugin/plugin-config";
-  import { container } from "../../../inversify";
-  import { TYPES } from "../../../config";
+  import { PLUGIN_SYSTEM_AUTO_UPDATE } from "../../../../plugin/plugin-config";
+  import { container } from "../../../../container";
+  import { TYPES } from "../../../../config";
+    import { IStorageManager } from "../../../../types";
 
-  const storageManager = container.get<StorageManager>(TYPES.StorageManager);
+  const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
 
   let configs = [
     {

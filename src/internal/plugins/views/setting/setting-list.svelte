@@ -1,15 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { StorageManager } from "../../../plugin/storage-manager";
-    import { container } from "../../../inversify";
-    import { TYPES } from "../../../config";
-    import { PluginSystem } from "../../../plugin";
-    import { IPlugin } from "../../../type.d";
+    import { container } from "../../../../container";
+    import { TYPES } from "../../../../config";
+    import { IPluginSystem, IStorageManager, PluginManifest } from "../../../../types";
 
-    const storageManager = container.get<StorageManager>(TYPES.StorageManager);
-    const pluginSystem = container.get<PluginSystem>(TYPES.PluginSystem);
+    const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
+    const pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem);
 
-    let plugins: IPlugin[] = [];
+    let plugins: PluginManifest[] = [];
 
     $: internalPlugins = plugins.filter((p) => p.plugin);
     $: outsidePlugins = plugins.filter((p) => p.script);

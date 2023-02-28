@@ -6,7 +6,10 @@
             "dom",
             "es2015"
         ],
-        "types": ["node", "reflect-metadata"],
+        "types": [
+            "node",
+            "reflect-metadata"
+        ],
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true

@@ -1,21 +1,20 @@
-import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { getLocalStorage, setStorageVal } from "../api/server-api";
 import { defaultConfig, PLUGIN_SYSTEM_PLUGIN } from "./plugin-config";
-import { IPlugin } from "../type";
 import { internalPlugins } from "../internal";
 import { PluginFileManager } from "./plugin-file-manager";
 import { TYPES } from "../config";
+import { IStorageManager, PluginManifest } from "../types";
 
 @injectable()
-class StorageManager {
+export class StorageManager implements IStorageManager {
     private pluginFileManager: PluginFileManager;
 
     private config: any;
 
     private initialized;
 
-    private plugins: IPlugin[];
+    private plugins: PluginManifest[];
 
     constructor(@inject(TYPES.PluginFileManager) pluginFileManager) {
         this.config = Object.assign({}, defaultConfig);
@@ -86,5 +85,3 @@ class StorageManager {
         this.set(PLUGIN_SYSTEM_PLUGIN, this.plugins.map((p) => ({ key: p.key, enabled: p.enabled })));
     }
 }
-
-export { StorageManager }

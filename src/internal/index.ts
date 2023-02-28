@@ -1,7 +1,7 @@
 export * from './classes';
-import { IPlugin } from '../type';
+import { PluginManifest } from '../types';
 import InternalSettingPlugin from './plugins/setting';
 
-export const internalPlugins: IPlugin[] = [
+export const internalPlugins: PluginManifest[] = [
     { key: 'setting', name: '插件系统设置', plugin: InternalSettingPlugin, enabled: true, hidden: true },
 ];

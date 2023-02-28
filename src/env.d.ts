@@ -1,16 +1,4 @@
-import { Plugin } from "./api/plugin";
-
-export interface IPlugin {
-    key: string;
-    name: string;
-    script?: string;
-    enabled?: boolean;
-    hidden?: boolean;
-    description?: string;
-    plugin?: new (...args: any) => Plugin;
-}
-
-// declare var process;
+export {}
 
 declare global {
     const __VERSION__: string;
