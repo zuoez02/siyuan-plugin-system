@@ -1,9 +1,9 @@
 import { PLUGIN_SYS_ABS_PATH, SCRIPT_URL, VERSION, VERSION_URL } from "../config";
-import { TYPES } from "../types";
+import { TYPES } from "../config";
 import { log, reloadWindow } from "../util";
-import { StorageManager } from '../plugin/storage-manager';
+import { StorageManager } from './storage-manager';
 import { inject, injectable } from "inversify";
-import { PLUGIN_SYSTEM_AUTO_UPDATE } from "../plugin/config";
+import { PLUGIN_SYSTEM_AUTO_UPDATE } from "./plugin-config";
 
 const fs = require('fs');
 const path = require('path');
@@ -11,7 +11,7 @@ const path = require('path');
 const pluginScriptPosition = PLUGIN_SYS_ABS_PATH;
 
 @injectable()
-export class PluginSystemLocalManager {
+export class SystemManager {
     storageMangager: StorageManager;
 
     constructor(@inject(TYPES.StorageManager) storageManager) {

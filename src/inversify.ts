@@ -1,9 +1,10 @@
 import { Container, interfaces } from "inversify";
 import { StorageManager } from './plugin/storage-manager';
 import { PluginSystem } from "./plugin";
-import { TYPES } from "./types";
-import { PluginSystemLocalManager } from "./worker/plugin-system-local-manager";
+import { TYPES } from "./config";
+import { SystemManager } from "./plugin/system-manager";
 import { PluginLoader } from "./plugin/loader";
+import { PluginFileManager } from "./plugin/plugin-file-manager";
 
 const container = new Container();
 container.bind<StorageManager>(TYPES.StorageManager).to(StorageManager).inSingletonScope();
@@ -17,9 +18,10 @@ container.bind<interfaces.Provider<StorageManager>>(TYPES.StorageManagerProvider
         })
     }
 });
-container.bind<PluginSystemLocalManager>(TYPES.PluginSystemLocalManager).to(PluginSystemLocalManager).inSingletonScope();
+container.bind<SystemManager>(TYPES.PluginSystemLocalManager).to(SystemManager).inSingletonScope();
 container.bind<PluginSystem>(TYPES.PluginSystem).to(PluginSystem).inSingletonScope();
 container.bind<PluginLoader>(TYPES.PluginLoader).to(PluginLoader).inSingletonScope();
+container.bind<PluginFileManager>(TYPES.PluginFileManager).to(PluginFileManager).inSingletonScope();
 
 
 export { container };

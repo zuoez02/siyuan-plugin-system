@@ -1,14 +1,14 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { PluginSystemLocalManager } from "../worker/plugin-system-local-manager";
+import { SystemManager } from "./system-manager";
 import { PluginLoader } from "./loader";
 import { StorageManager } from './storage-manager';
-import { TYPES } from '../types';
+import { TYPES } from '../config';
 
 @injectable()
 export class PluginSystem {
     pluginLoader: PluginLoader;
-    pslm: PluginSystemLocalManager;
+    pslm: SystemManager;
     storageManager: StorageManager;
     storageManagerProvider: () => Promise<StorageManager>;
 

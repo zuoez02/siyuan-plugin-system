@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { StorageManager } from "../../../plugin/storage-manager";
     import { container } from "../../../inversify";
-    import { TYPES } from "../../../types";
+    import { TYPES } from "../../../config";
     import { PluginSystem } from "../../../plugin";
     import { IPlugin } from "../../../type.d";
 

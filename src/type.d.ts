@@ -1,4 +1,4 @@
-import { Plugin } from "./plugin/plugin";
+import { Plugin } from "./api/plugin";
 
 export interface IPlugin {
     key: string;

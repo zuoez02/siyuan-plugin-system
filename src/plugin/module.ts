@@ -1,4 +1,4 @@
-import { Plugin } from "./plugin";
+import { Plugin } from "../api/plugin";
 import { BaseComponent } from "./component";
 
 export const modules = {

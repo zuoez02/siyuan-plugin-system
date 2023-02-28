@@ -1,19 +1,24 @@
-import { Plugin } from "./plugin";
-import { apiGenerate } from "./api";
+import { Plugin } from "../api/plugin";
+import { apiGenerate } from "./api-generate";
 import { modules } from "./module";
-import { getAllPlugins } from "../worker/plugin";
 import { IPlugin } from "../type";
 import { internalPlugins } from "../internal";
 import { log } from "../util";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import { PluginFileManager } from "./plugin-file-manager";
+import { TYPES } from "../config";
 
 let components: { [key: string]: any };
 
 @injectable()
 export class PluginLoader {
+
+    pluginFileManager: PluginFileManager;
+
     loadedPlugins: Map<string, Plugin>;
 
-    constructor() {
+    constructor(@inject(TYPES.PluginFileManager) pluginFileManager) {
+        this.pluginFileManager = pluginFileManager;
         this.loadedPlugins = new Map();
     }
 
@@ -42,7 +47,7 @@ export class PluginLoader {
     }
 
     async loadAllLocalPlugins() {
-        const plugins = await getAllPlugins();
+        const plugins = await this.pluginFileManager.getAllPlugins();
         if (!plugins) {
             return;
         }
