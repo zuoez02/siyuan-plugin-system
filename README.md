@@ -1,20 +1,28 @@
-# siyuan-plugin-system
+# Siyuan Plugin System
 
-思源插件系统，依赖于“代码片段”功能。
+[中文版本](./README_zh.md)
 
-## 装载
+A plugin system based on 'Code Snippet' function in Siyuan, which a local note system like 'Notion'.
 
-在代码片段中引入[load.js](./load.js)中的内容，并开启。然后重启思源，即可完成插件系统的自动安装。
+## Install
+Add the [`load.js`](./load.js) content to JS snippets in setting and enable it. Reload the Siyuan to finish auto install.
 
+## Plugins
+[zuoez02/siyuan-plugins](https://github.com/zuoez02/siyuan-plugins)
+
+Here are some plugins maybe you can use. :)
 
 ## Roadmap
 
-- [x] 插件系统远程获取
-- [x] 插件系统本地缓存，可直接加载
-- [x] 本地缓存自动更新功能，通过版本号比对
-- [ ] 引入更多API支持插件更新
-- [ ] 跨平台计划，替换API
-- [ ] 插件加载管理
-- [ ] 插件生命周期管理，创建与销毁
-- [ ] 插件包分发方案实现
-- [ ] 考虑版本兼容性问题，更改自动更新和下载策略
+[Project Siyuan Plugin System](https://github.com/users/zuoez02/projects/1)
+
+## Preview
+
+*Plugin system entry*
+![Pic1](./assets/pic-1.png)
+
+*Plugin system setting*
+![Pic2](./assets/pic-2.png)
+
+*Plugin system plugin list*
+![Pic3](./assets/pic-3.png)
