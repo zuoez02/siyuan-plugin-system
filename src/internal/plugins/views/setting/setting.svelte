@@ -47,7 +47,7 @@
                 {/each}
             </ul>
             <div
-                class="b3-tab-container"
+                class="config__tab-container"
                 style="height: unset !important;"
                 data-name={currentSelection.key}
             >

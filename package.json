@@ -1,6 +1,6 @@
 {
   "name": "siyuan-plugin-system",
-  "version": "0.3.1",
+  "version": "0.3.9",
   "type": "module",
   "scripts": {
     "build": "node build.cjs",
