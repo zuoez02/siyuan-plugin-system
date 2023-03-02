@@ -17,7 +17,7 @@ export class PluginFileManager {
         return new Promise((resolve, reject) => {
             fs.readdir(pluginFolder, (err, files) => {
                 if (err) {
-                    reject(err);
+                    resolve([]);
                     return;
                 }
                 resolve(files.filter((f) => {
@@ -45,6 +45,7 @@ export class PluginFileManager {
             return JSON.parse(content);
         } catch (e) {
             error('loading manifest: ' + manifest, e);
+            return null;
         }
     }
 
