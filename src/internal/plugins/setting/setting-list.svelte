@@ -1,9 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { container } from "../../../../container";
-    import { TYPES } from "../../../../config";
-    import { IPluginSystem, IStorageManager, PluginManifest } from "../../../../types";
-    import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from "../../../../plugin/plugin-config";
+    import { container } from "../../../container";
+    import { TYPES } from "../../../config";
+    import { IPluginSystem, IStorageManager, PluginManifest } from "../../../types";
+    import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from "../../../plugin/plugin-config";
 
     const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
     const pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem);

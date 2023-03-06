@@ -1,7 +1,9 @@
 export * from './classes';
-import { PluginManifest } from '../types';
-import { InternalSettingPlugin } from './plugins/views/setting';
+import { PluginManifest } from '@/types';
+import { CommandPanelPlugin } from './plugins/command-panel';
+import { InternalSettingPlugin } from './plugins/setting';
 
 export const internalPlugins: PluginManifest[] = [
     { key: 'setting', name: '插件系统设置', plugin: InternalSettingPlugin, enabled: true, hidden: true },
+    // { key: 'commandPanel', name: '控制面板', plugin: CommandPanelPlugin, enabled: true, },
 ];

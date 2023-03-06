@@ -10,7 +10,7 @@ export const SIYUAN_DATA_PATH = window.siyuan.config.system.dataDir;
 
 export const PLUGIN_FOLDER = 'plugins';
 
-export const VERSION = 'v0.3.9';
+export const VERSION = 'v0.3.11';
 
 export const VERSION_URL = 'https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/VERSION';
 
@@ -27,4 +27,7 @@ export const TYPES = {
     SystemManager: Symbol.for('PluginSystemLocalManager'),
     PluginLoader: Symbol.for('PluginLoader'),
     PluginFileManager: Symbol.for('PluginFileManager'),
+    EventBus: Symbol.for('EventBus'),
+    Shortcut: Symbol.for('Shortcut'),
+    CommandManager: Symbol.for('CommandManager'),
 };

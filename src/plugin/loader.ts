@@ -1,11 +1,12 @@
 import { Plugin } from "../api/plugin";
 import { apiGenerate } from "./api-generate";
 import { modules } from "./module";
-import { IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from "../types";
+import { IPluginCommand, ICommandManager, IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from "../types";
 import { internalPlugins } from "../internal";
 import { log } from "../util";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../config";
+import { container } from "@/container";
 
 let components: { [key: string]: any };
 
@@ -40,6 +41,14 @@ export class PluginLoader implements IPluginLoader {
                 throw new Error(`Failed to load plugin ${p.name}`);
             }
             log(`Load internal plugin: ${p.key}(${p.name})`);
+            plug.registerCommand = (command: IPluginCommand) => {
+                const cm = container.get<ICommandManager>(TYPES.CommandManager);
+                cm.registerCommand({
+                    ...command,
+                    plugin: p.key,
+                    pluginName: p.name,
+                });
+            }
             plug.onload();
             this.loadedPlugins.set(p.key, plug);
         })
@@ -69,6 +78,14 @@ export class PluginLoader implements IPluginLoader {
                 throw new Error(`Failed to load plugin ${plugin.name}`);
             }
             log(`Load internal plugin: ${plugin.key}(${plugin.name})`);
+            plug.registerCommand = (command: IPluginCommand) => {
+                const cm = container.get<ICommandManager>(TYPES.CommandManager);
+                cm.registerCommand({
+                    ...command,
+                    plugin: plugin.key,
+                    pluginName: plugin.name,
+                });
+            }
             await plug.onload();
             this.loadedPlugins.set(plugin.key, plug);
             return;
@@ -94,7 +111,15 @@ export class PluginLoader implements IPluginLoader {
         if (!(plug instanceof Plugin)) {
             throw new Error(`Failed to load plugin ${pluginName}`);
         }
-        plug.onload();
+        plug.registerCommand = (command: IPluginCommand) => {
+            const cm = container.get<ICommandManager>(TYPES.CommandManager);
+            cm.registerCommand({
+                ...command,
+                plugin: plugin.key,
+                pluginName,
+            });
+        }
+        await plug.onload();
         this.loadedPlugins.set(plugin.key, plug);
     }
 
@@ -104,6 +129,7 @@ export class PluginLoader implements IPluginLoader {
             return;
         }
         await plugin.onunload();
+        container.get<ICommandManager>(TYPES.CommandManager).unregisterCommandByPlugin(key);
         this.loadedPlugins.delete(key);
     }
 

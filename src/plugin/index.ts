@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
 import { TYPES } from '../config';
-import { IPluginLoader, IPluginSystem, IStorageManager, ISystemManager } from "../types";
+import { ICommandManager, IPluginLoader, IPluginSystem, IStorageManager, ISystemManager } from "../types";
 import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from "./plugin-config";
 import { log } from "../util";
 
@@ -11,11 +11,13 @@ export class PluginSystem implements IPluginSystem {
     pslm: ISystemManager;
     storageManager: IStorageManager;
     storageManagerProvider: () => Promise<IStorageManager>;
+    commandManager: ICommandManager;
 
-    constructor(@inject(TYPES.PluginLoader) pluginLoader, @inject(TYPES.SystemManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider) {
+    constructor(@inject(TYPES.PluginLoader) pluginLoader, @inject(TYPES.SystemManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider, @inject(TYPES.CommandManager) commandManager) {
         this.pluginLoader = pluginLoader;
         this.pslm = pluginSystemLocalManager;
         this.storageManagerProvider = storageManagerProvider;
+        this.commandManager = commandManager;
     }
 
     async init() {

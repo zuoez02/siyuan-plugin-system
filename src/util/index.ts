@@ -48,3 +48,13 @@ export function isExists(p: string) {
         return false;
     }
 }
+
+abstract class Info {
+    info: string;
+    constructor(info: string) {
+        this.info = info;
+    }
+}
+
+export class Warning extends Info {}
+export class Error extends Info {}

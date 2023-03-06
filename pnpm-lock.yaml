@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@sveltejs/vite-plugin-svelte': ^2.0.3
   '@types/node': ^18.14.1
+  hotkeys-js: ^3.10.1
   inversify: ^6.0.1
   reflect-metadata: ^0.1.13
   svelte: ^3.55.1
@@ -11,6 +12,7 @@ specifiers:
 
 dependencies:
   '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.55.1+vite@4.1.4
+  hotkeys-js: 3.10.1
   inversify: 6.0.1
   reflect-metadata: 0.1.13
   svelte: 3.55.1
@@ -348,6 +350,10 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+    dev: false
+
+  /hotkeys-js/3.10.1:
+    resolution: {integrity: sha512-mshqjgTqx8ee0qryHvRgZaZDxTwxam/2yTQmQlqAWS3+twnq1jsY9Yng9zB7lWq6WRrjTbTOc7knNwccXQiAjQ==}
     dev: false
 
   /inversify/6.0.1:

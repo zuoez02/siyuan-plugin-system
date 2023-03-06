@@ -3,10 +3,10 @@
   import {
     PLUGIN_SYSTEM_AUTO_UPDATE,
     PLUGIN_SYSTEM_SAFE_MODE_ENABLED,
-  } from "../../../../plugin/plugin-config";
-  import { container } from "../../../../container";
-  import { TYPES } from "../../../../config";
-  import { IPluginSystem, IStorageManager } from "../../../../types";
+  } from "../../../plugin/plugin-config";
+  import { container } from "../../../container";
+  import { TYPES } from "../../../config";
+  import { IPluginSystem, IStorageManager } from "../../../types";
 
   const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
   const pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem);

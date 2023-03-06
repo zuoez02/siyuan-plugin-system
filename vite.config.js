@@ -12,6 +12,11 @@ export default defineConfig({
         // the proper extensions will be added
         fileName: 'main',
     },
+    resolve: {
+        alias: {
+          '@': resolve('src'),
+        },
+      },
     build: {
         rollupOptions: {
             input: {

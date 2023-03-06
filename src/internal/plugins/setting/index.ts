@@ -1,6 +1,6 @@
-import { Menu, MenuItem, Dialog } from '../../..';
-import * as clientApi from '../../../../api/client-api';
-import { Plugin } from '../../../../api/plugin';
+import { Menu, MenuItem, Dialog } from '@/internal';
+import * as clientApi from '@/api/client-api';
+import { Plugin } from '@/api/plugin';
 import Settings from './setting.svelte';
 
 export class InternalSettingPlugin extends Plugin {

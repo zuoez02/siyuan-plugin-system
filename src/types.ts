@@ -98,3 +98,42 @@ export interface PluginConfig {
     PLUGIN_SYSTEM_PLUGIN: Array<PluginEnableConfig>;
     PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN: Array<PluginEnableConfig>;
 }
+
+export type Listener = (...args: any) => void;
+
+export interface IEventBus {
+    on(eventName: string, callback: Listener): () => void;
+    off(eventName: string, callback?: Listener): void;
+    emit(eventName: string, ...args: any): void;
+    destroy(): void;
+}
+
+export interface Command {
+    plugin: string;
+    pluginName: string;
+    command: string;
+    shortcut?: string;
+    description?: string;
+    callback: (...args) => any;
+}
+
+export interface IPluginCommand {
+    command: string;
+    shortcut?: string;
+    description?: string;
+    callback: (...args) => any;
+}
+
+export interface ICommandManager {
+    registerCommand(command: Command);
+    unregisterCommand(command: Command);
+    unregisterCommandByPlugin(plugin: string);
+    getCommands(): Command[];
+}
+
+export interface IShortcut {
+    registerKeyboardEvent(shortcut: string, callback: (e: KeyboardEvent) => void);
+    unregisterKeyboardEvent(shortcut: string);
+    registerKeyboardEventFromPlugin(command: Command);
+    unregisterKeyboardEventFromPlugin(command: Command);
+}

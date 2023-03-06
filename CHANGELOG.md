@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.3.11
++ 增加通过Plugin继承调用registerCommand，实现插件快捷键注册。未来将通过此方式开发命令面板。
+
 ## v0.3.10
 + 修复没有plugins时初次安装遇到的问题
 
