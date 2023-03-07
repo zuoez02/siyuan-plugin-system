@@ -1,6 +1,5 @@
 import { Plugin } from "../api/plugin";
-import { apiGenerate } from "./api-generate";
-import { modules } from "./module";
+import api from "../api";
 import { IPluginCommand, ICommandManager, IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from "../types";
 import { internalPlugins } from "../internal";
 import { log } from "../util";
@@ -147,10 +146,7 @@ export class PluginLoader implements IPluginLoader {
 
     generateRequiredModules() {
         components = {
-            "siyuan": {
-                ...modules,
-                ...apiGenerate(),
-            }
+            "siyuan": api,
         };
     }
 }

@@ -1,21 +1,27 @@
 {
   "name": "siyuan-plugin-system",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "type": "module",
   "scripts": {
     "build": "node build.cjs",
-    "dev": "node tools/update-dev.cjs"
+    "dev": "node tools/update-dev.cjs",
+    "type:build": "tsc src/api.ts src/index.d.ts -d --emitDeclarationOnly --outdir temp && node tools/bundle.cjs",
+    "type:clean": "rm -rf temp/ type/"
   },
   "devDependencies": {
     "@types/node": "^18.14.1",
     "terser": "^5.16.5"
   },
   "dependencies": {
+    "@microsoft/api-extractor": "^7.34.4",
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "dts-bundle": "^0.7.3",
+    "dts-gen": "^0.6.1",
     "hotkeys-js": "^3.10.1",
     "inversify": "^6.0.1",
     "reflect-metadata": "^0.1.13",
     "svelte": "^3.55.1",
+    "typescript": "^4.9.5",
     "vite": "^4.1.4"
   }
 }

@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.3.12
++ 重构API接口，支持自动化导出api类型声明
+
 ## v0.3.11
 + 增加通过Plugin继承调用registerCommand，实现插件快捷键注册。未来将通过此方式开发命令面板。
 
