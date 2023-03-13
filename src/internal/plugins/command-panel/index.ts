@@ -1,6 +1,6 @@
 import { Plugin } from "@/api/plugin";
 import { Dialog } from "@/internal/classes";
-import { Shortcut } from "@/plugin/shortcut";
+import { Shortcut } from "@/core/shortcut";
 import CommandPanel__SvelteComponent_ from "./command-panel.svelte";
 
 export class CommandPanelPlugin extends Plugin {
