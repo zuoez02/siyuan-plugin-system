@@ -10,7 +10,7 @@ export const SIYUAN_DATA_PATH = window.siyuan.config.system.dataDir;
 
 export const PLUGIN_FOLDER = 'plugins';
 
-export const VERSION = 'v0.3.13';
+export const VERSION = 'v0.3.14';
 
 export const VERSION_URL = 'https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/VERSION';
 

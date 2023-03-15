@@ -28,6 +28,7 @@ export class PluginSystem implements IPluginSystem {
             this.pluginLoader.loadEnabledPlugins(plugins);
         }
         this.pslm.localCacheInit();
+        this.store.init();
         return this;
     }
 

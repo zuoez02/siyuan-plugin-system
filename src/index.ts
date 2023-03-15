@@ -6,15 +6,10 @@ import { container } from './container';
 import { TYPES } from './config';
 import { IPluginSystem, IStorageManager } from './types';
 
-(async () => {
-    if (!window.pluginSystem) {
-        log('Siyuan Plugin System loading...');
-        window.pluginSystemVersion = VERSION;
-        const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
-        await storageManager.initStorage();
-        
-        window.pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem).init();
-        window.pluginSystemIocContainer = container;
-    }
-    
-})();
+
+if (!window.pluginSystem) {
+    log('Siyuan Plugin System loading...');
+    window.pluginSystemVersion = VERSION;
+    window.pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem).init();
+    window.pluginSystemIocContainer = container;
+}

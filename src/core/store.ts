@@ -3,10 +3,8 @@ import { PLUGIN_STORE_URL } from "@/core/plugin-config";
 import { StorePluginManifest, StorePluginStatus } from "@/types";
 import axios from "axios";
 import { inject, injectable } from "inversify";
-import { IStorageManager } from "siyuan/types";
-import semver, { rsort, SemVer } from 'semver';
+import { SemVer } from 'semver';
 import { writeFile } from "@/util/fs";
-import { resolve } from "path";
 
 @injectable()
 export class Store {
@@ -16,7 +14,6 @@ export class Store {
     constructor(@inject(TYPES.StorageManager) private storageManager) {
         this.plugins = [];
         this.pluginStatus = [];
-        this.init();
     }
 
     public async init() {
