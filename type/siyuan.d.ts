@@ -153,6 +153,7 @@ declare module 'siyuan/types' {
     }
     export interface PluginManifest {
         key: string;
+        version: string;
         name: string;
         script?: string;
         enabled?: boolean;

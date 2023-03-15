@@ -23,7 +23,7 @@ export class StorageManager implements IStorageManager {
         this.pluginFileManager = pluginFileManager;
     }
 
-    public get(key: string) {
+    public get(key: keyof PluginConfig) {
         return this.config[key];
     }
 

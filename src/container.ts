@@ -9,19 +9,10 @@ import { IStorageManager, ISystemManager, IPluginSystem, IPluginLoader, IPluginF
 import { EventBus } from "./core/event-bus";
 import { CommandManager } from "./core/command-manager";
 import { Shortcut } from "./core/shortcut";
+import { Store } from "./core/store";
 
 const container = new Container();
 container.bind<IStorageManager>(TYPES.StorageManager).to(StorageManager).inSingletonScope();
-container.bind<interfaces.Provider<IStorageManager>>(TYPES.StorageManagerProvider).toProvider<IStorageManager>((context) => {
-    return () => {
-        return new Promise<IStorageManager>((resolve) => {
-            const storageManger = context.container.get<IStorageManager>(TYPES.StorageManager);
-            storageManger.initStorage().then(() => {
-                resolve(storageManger);
-            })
-        })
-    }
-});
 container.bind<ISystemManager>(TYPES.SystemManager).to(SystemManager).inSingletonScope();
 container.bind<IPluginSystem>(TYPES.PluginSystem).to(PluginSystem).inSingletonScope();
 container.bind<IPluginLoader>(TYPES.PluginLoader).to(PluginLoader).inSingletonScope();
@@ -29,5 +20,6 @@ container.bind<IPluginFileManager>(TYPES.PluginFileManager).to(PluginFileManager
 container.bind<IEventBus>(TYPES.EventBus).to(EventBus);
 container.bind<IShortcut>(TYPES.Shortcut).to(Shortcut).inSingletonScope();
 container.bind<ICommandManager>(TYPES.CommandManager).to(CommandManager).inSingletonScope();
+container.bind<Store>(TYPES.Store).to(Store).inSingletonScope();
 
 export { container };

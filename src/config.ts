@@ -10,7 +10,7 @@ export const SIYUAN_DATA_PATH = window.siyuan.config.system.dataDir;
 
 export const PLUGIN_FOLDER = 'plugins';
 
-export const VERSION = 'v0.3.12';
+export const VERSION = 'v0.3.13';
 
 export const VERSION_URL = 'https://gitee.com/zuoez02/siyuan-plugin-system/raw/main/VERSION';
 
@@ -21,13 +21,13 @@ export const PLUGIN_SYS_ABS_PATH = path.join(getCrossPlatformAppDataFolder(), '.
 export const config = () => ({ token: window.siyuan.config.api.token });
 
 export const TYPES = {
-    StorageManager: Symbol.for("StorageManager"),
-    StorageManagerProvider: Symbol.for("StorageManagerProvider"),
-    PluginSystem: Symbol.for("PluginSystem"),
-    SystemManager: Symbol.for('PluginSystemLocalManager'),
-    PluginLoader: Symbol.for('PluginLoader'),
-    PluginFileManager: Symbol.for('PluginFileManager'),
-    EventBus: Symbol.for('EventBus'),
-    Shortcut: Symbol.for('Shortcut'),
-    CommandManager: Symbol.for('CommandManager'),
+    StorageManager: "StorageManager",
+    PluginSystem: "PluginSystem",
+    SystemManager: 'PluginSystemLocalManager',
+    PluginLoader: 'PluginLoader',
+    PluginFileManager: 'PluginFileManager',
+    EventBus: 'EventBus',
+    Shortcut: 'Shortcut',
+    CommandManager: 'CommandManager',
+    Store: 'Store',
 };

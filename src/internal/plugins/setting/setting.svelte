@@ -1,6 +1,7 @@
 <script lang="ts">
     import SettingCommon from "./setting-common.svelte";
     import SettingList from "./setting-list.svelte";
+    import SettingStore from "./setting-store.svelte";
     const menus = [
         {
             key: "common",
@@ -14,6 +15,12 @@
             icon: "#iconSettings",
             component: SettingList,
         },
+        {
+            key: 'store',
+            name: '插件商店',
+            icon: '#iconSettings',
+            component: SettingStore,
+        }
     ];
 
     const setCurrentSelection = (menu) => (currentSelection = menu);

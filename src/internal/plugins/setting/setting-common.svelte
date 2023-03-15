@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import {
+    defaultConfig,
+    PLUGIN_STORE_URL,
     PLUGIN_SYSTEM_AUTO_UPDATE,
     PLUGIN_SYSTEM_SAFE_MODE_ENABLED,
   } from "@/core/plugin-config";
@@ -20,9 +22,9 @@
       onChange: (event) => {
         const checked = event.target.checked;
         if (checked) {
-            pluginSystem.turnOnSafeMode();
+          pluginSystem.turnOnSafeMode();
         } else {
-            pluginSystem.turnOffSafeMode();
+          pluginSystem.turnOffSafeMode();
         }
       },
     },
@@ -35,12 +37,19 @@
         storageManager.set(PLUGIN_SYSTEM_AUTO_UPDATE, event.target.checked);
       },
     },
+    {
+      label: "插件商店地址",
+      tip: `线上插件系统仓库地址, 默认为 ${defaultConfig.PLUGIN_STORE_URL}`,
+      type: "input",
+      value: storageManager.get(PLUGIN_STORE_URL),
+      onChange: (event) => {
+        storageManager.set(PLUGIN_STORE_URL, event.target.value);
+      },
+    },
   ];
 
   onMount(() => {
-    const securityMode = storageManager.get(
-      PLUGIN_SYSTEM_SAFE_MODE_ENABLED
-    );
+    const securityMode = storageManager.get(PLUGIN_SYSTEM_SAFE_MODE_ENABLED);
     configs[0].checked = securityMode;
     const autoUpdate = storageManager.get(PLUGIN_SYSTEM_AUTO_UPDATE);
     configs[1].checked = autoUpdate;
@@ -48,18 +57,26 @@
 </script>
 
 {#each configs as config}
-  <label class="fn__flex b3-label">
+  <label class="fn__flex b3-label config__item">
     <div class="fn__flex-1">
       {config.label}
       <div class="b3-label__text">{config.tip}</div>
     </div>
     <span class="fn__space" />
-    <input
-      class="b3-switch fn__flex-center"
-      id="fullWidth"
-      type="checkbox"
-      bind:checked={config.checked}
-      on:change={config.onChange}
-    />
+    {#if config.type === "checkbox"}
+      <input
+        class="b3-switch fn__flex-center"
+        type="checkbox"
+        bind:checked={config.checked}
+        on:change={config.onChange}
+      />
+    {:else if config.type === "input"}
+      <input
+        class="b3-text-field fn__flex-center fn__size200"
+        type="input"
+        bind:value={config.value}
+        on:change={config.onChange}
+      />
+    {/if}
   </label>
 {/each}

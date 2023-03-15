@@ -1,27 +1,23 @@
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { TYPES } from '../config';
-import { ICommandManager, IPluginLoader, IPluginSystem, IStorageManager, ISystemManager } from "../types";
+import { TYPES, VERSION } from '../config';
+import { IPluginSystem, IStorageManager } from "../types";
 import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from "./plugin-config";
 import { log } from "../util";
 
 @injectable()
 export class PluginSystem implements IPluginSystem {
-    pluginLoader: IPluginLoader;
-    pslm: ISystemManager;
-    storageManager: IStorageManager;
-    storageManagerProvider: () => Promise<IStorageManager>;
-    commandManager: ICommandManager;
+    public version = VERSION;
 
-    constructor(@inject(TYPES.PluginLoader) pluginLoader, @inject(TYPES.SystemManager) pluginSystemLocalManager, @inject(TYPES.StorageManagerProvider) storageManagerProvider, @inject(TYPES.CommandManager) commandManager) {
-        this.pluginLoader = pluginLoader;
-        this.pslm = pluginSystemLocalManager;
-        this.storageManagerProvider = storageManagerProvider;
-        this.commandManager = commandManager;
+    constructor(@inject(TYPES.PluginLoader) private pluginLoader,
+        @inject(TYPES.SystemManager) private pslm,
+        @inject(TYPES.StorageManager) private storageManager: IStorageManager,
+        @inject(TYPES.CommandManager) private commandManager,
+        @inject(TYPES.Store) private store) {
     }
 
     async init() {
-        this.storageManager = await this.storageManagerProvider();
+        await this.storageManager.initStorage();
         const internalPlugins = this.storageManager.getInternalPlugins();
         this.pluginLoader.loadEnabledPlugins(internalPlugins);
         log(`Loading internal enabled plugins: ${internalPlugins.map((p) => p.key).join(',')}`);

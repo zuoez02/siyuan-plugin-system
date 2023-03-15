@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.13
++ 增加插件商店，并可配置插件商店地址
++ 暴露PluginSystem及Ioc容器到window对象
+
 ## v0.3.12
 + 重构API接口，支持自动化导出api类型声明
 

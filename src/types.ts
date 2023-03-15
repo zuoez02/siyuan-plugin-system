@@ -7,9 +7,23 @@ export interface PluginConstructor {
     new(): IPlugin
 }
 
+export interface StorePluginManifest {
+    key: string;
+    name: string;
+    description: string;
+    author: string;
+    version: string;
+}
+
+export interface StorePluginStatus extends StorePluginManifest {
+    isExist: boolean;
+    needUpgrade: boolean;
+}
+
 export interface PluginManifest {
     key: string;
     name: string;
+    version: string;
     script?: string;
     enabled?: boolean;
     hidden?: boolean;
@@ -18,7 +32,7 @@ export interface PluginManifest {
 }
 
 export interface IStorageManager {
-    get(key: string): any;
+    get(key: keyof PluginConfig): any;
     set(key: string, val: any): Promise<void>;
     initStorage(): Promise<IStorageManager>;
     getPlugins(): PluginManifest[];
@@ -97,6 +111,7 @@ export interface PluginConfig {
     PLUGIN_SYSTEM_AUTO_UPDATE: boolean;
     PLUGIN_SYSTEM_PLUGIN: Array<PluginEnableConfig>;
     PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN: Array<PluginEnableConfig>;
+    PLUGIN_STORE_URL: string;
 }
 
 export type Listener = (...args: any) => void;
