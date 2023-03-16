@@ -1,23 +1,27 @@
 import { TYPES } from "@/config";
 import { PLUGIN_STORE_URL } from "@/core/plugin-config";
-import { StorePluginManifest, StorePluginStatus } from "@/types";
+import { IStorageManager, StorePluginManifest, StorePluginStatus } from "@/types";
 import axios from "axios";
 import { inject, injectable } from "inversify";
 import { SemVer } from 'semver';
 import { writeFile } from "@/util/fs";
+import { sleep } from "@/util";
 
 @injectable()
 export class Store {
     private plugins: StorePluginManifest[];
     private pluginStatus: StorePluginStatus[];
 
-    constructor(@inject(TYPES.StorageManager) private storageManager) {
+    constructor(@inject<IStorageManager>(TYPES.StorageManager) private storageManager: IStorageManager) {
         this.plugins = [];
         this.pluginStatus = [];
     }
 
     public async init() {
+        this.plugins = [];
+        this.pluginStatus = [];
         await this.loadPluginsFromUrl();
+        await this.storageManager.initStorage();
         const plugins = this.storageManager.getPlugins();
         const storePlugins: StorePluginStatus[] = [];
         for (const plugin of this.plugins) {
@@ -42,6 +46,11 @@ export class Store {
 
     public getPlugins() {
         return this.plugins;
+    }
+
+    public async loadPlugins() {
+        await this.init();
+        return this.getPluginsWithStatus();
     }
 
     public getPluginsWithStatus() {
@@ -108,11 +117,14 @@ export class Store {
     }
 
     public async downloadPlugin(key: string) {
+        await sleep(500);
         const files = await this.getPluginByUrl(`${this.getStoreUrl()}/${key}`);
         const manifestJson = files.manifest;
         const mainJs = files.mainJs;
-        await writeFile(`/data/plugins/${key}`, null, true);
-        await writeFile(`/data/plugins/${key}/manifest.json`, JSON.stringify(manifestJson), false);
-        await writeFile(`/data/plugins/${key}/main.js`, mainJs, false);
+        return await Promise.all([
+            writeFile(`/data/plugins/${key}`, null, true),
+            writeFile(`/data/plugins/${key}/manifest.json`, JSON.stringify(manifestJson), false),
+            writeFile(`/data/plugins/${key}/main.js`, mainJs, false),
+        ]);
     }
 }

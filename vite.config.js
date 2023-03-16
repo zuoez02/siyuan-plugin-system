@@ -2,9 +2,16 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { replaceCodePlugin } from "vite-plugin-replace";
+import packageJson from './package.json'
 
 export default defineConfig({
-    plugins: [svelte()],
+    plugins: [svelte(), replaceCodePlugin({
+        replacements: [{
+            from: '__VERSION__',
+            to: packageJson.version,
+        }]
+    })],
     lib: {
         // Could also be a dictionary or array of multiple entry points
         entry: resolve(__dirname, 'src/index.js'),

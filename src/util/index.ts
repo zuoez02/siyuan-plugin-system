@@ -1,4 +1,5 @@
 import { Stats } from "fs";
+import { resolve } from "path";
 import { PROCESS_ENV } from "../config";
 
 const path = require('path');
@@ -7,6 +8,12 @@ const fs = require('fs');
 export const log = (...p) => {
     console.log(`[Plugin System] `, ...p)
 };
+
+export const sleep = async (t: number) => {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(null), t);
+    })
+}
 
 export const error = (...p) => console.error(`[Plugin System] `, ...p);
 

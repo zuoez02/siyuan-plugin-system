@@ -16,6 +16,7 @@ specifiers:
   terser: ^5.16.5
   typescript: ^4.9.5
   vite: ^4.1.4
+  vite-plugin-replace: ^0.1.1
 
 dependencies:
   '@microsoft/api-extractor': 7.34.4_@types+node@18.14.1
@@ -31,6 +32,7 @@ dependencies:
   svelte: 3.55.1
   typescript: 4.9.5
   vite: 4.1.4_4dekbj63vpjjfl7rixood357km
+  vite-plugin-replace: 0.1.1_vite@4.1.4
 
 devDependencies:
   '@types/node': 18.14.1
@@ -1209,6 +1211,14 @@ packages:
   /validator/13.9.0:
     resolution: {integrity: sha512-B+dGG8U3fdtM0/aNK4/X8CXq/EcxU2WPrPEkJGslb47qyHsxmbggTWK0yEA4qnYVNF+nxNlN88o14hIcPmSIEA==}
     engines: {node: '>= 0.10'}
+    dev: false
+
+  /vite-plugin-replace/0.1.1_vite@4.1.4:
+    resolution: {integrity: sha512-v+okl3JNt2pf1jDYijw+WPVt6h9FWa/atTi+qnSFBqmKThLTDhlesx0r3bh+oFPmxRJmis5tNx9HtN6lGFoqWg==}
+    peerDependencies:
+      vite: ^2
+    dependencies:
+      vite: 4.1.4_4dekbj63vpjjfl7rixood357km
     dev: false
 
   /vite/4.1.4_4dekbj63vpjjfl7rixood357km:

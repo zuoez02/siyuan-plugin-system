@@ -31,7 +31,8 @@
         }
     };
 
-    onMount(() => {
+    onMount(async () => {
+        await storageManager.initStorage();
         loadPlugins();
     });
 </script>

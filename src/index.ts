@@ -4,7 +4,7 @@ import { VERSION } from './config';
 import { log } from './util';
 import { container } from './container';
 import { TYPES } from './config';
-import { IPluginSystem, IStorageManager } from './types';
+import { IPluginSystem } from './types';
 
 
 if (!window.pluginSystem) {

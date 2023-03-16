@@ -33,6 +33,12 @@ export class InternalSettingPlugin extends Plugin {
             event.stopPropagation();
         });
         clientApi.addToolbarRight(internalSettingButton);
+
+        this.registerCommand({
+            command: 'settingList',
+            shortcut: 'command+option+p',
+            callback: () => showSettingDialog(),
+        })
     }
 
     onunload() {

@@ -61,7 +61,7 @@ export class PluginFileManager {
         }
         const result: PluginManifest[] = [];
         for (const p of plugins) {
-            log('Loading plugin: ' + p);
+            log('Reading plugin from filesystem: ' + p);
             const [manifest, script] = await Promise.all([this.getManifest(path.join(p, MANIFEST)), this.getScript(path.join(p, SCRIPT))]);
             result.push({ ...manifest, script, enabled: false, key: path.basename(p) });
         }

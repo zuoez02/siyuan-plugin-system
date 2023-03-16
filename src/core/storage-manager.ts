@@ -33,9 +33,6 @@ export class StorageManager implements IStorageManager {
     }
 
     async initStorage() {
-        if (this.initialized) {
-            return this;
-        }
         const all = await getLocalStorage();
         const configKeys = Object.keys(defaultConfig);
         for (const key of configKeys) {
