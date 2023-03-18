@@ -140,6 +140,8 @@ declare module 'siyuan/api/plugin' {
         onload(): void;
         onunload(): void;
         registerCommand(command: IPluginCommand): void;
+        loadStorage(filename: string): Promise<any>;
+        writeStorage(filename: string, content: any): Promise<void>;
     }
 }
 
@@ -147,14 +149,28 @@ declare module 'siyuan/types' {
     export interface IPlugin {
         onload(): void;
         onunload(): void;
+        registerCommand(command: IPluginCommand): any;
+        loadStorage(filename: string): Promise<Response>;
+        writeStorage(filename: string, content: any): Promise<void>;
     }
     export interface PluginConstructor {
         new (): IPlugin;
     }
+    export interface StorePluginManifest {
+        key: string;
+        name: string;
+        description: string;
+        author: string;
+        version: string;
+    }
+    export interface StorePluginStatus extends StorePluginManifest {
+        isExist: boolean;
+        needUpgrade: boolean;
+    }
     export interface PluginManifest {
         key: string;
-        version: string;
         name: string;
+        version: string;
         script?: string;
         enabled?: boolean;
         hidden?: boolean;
@@ -162,7 +178,7 @@ declare module 'siyuan/types' {
         plugin?: new (...args: any) => IPlugin;
     }
     export interface IStorageManager {
-        get(key: string): any;
+        get(key: keyof PluginConfig): any;
         set(key: string, val: any): Promise<void>;
         initStorage(): Promise<IStorageManager>;
         getPlugins(): PluginManifest[];
@@ -172,9 +188,8 @@ declare module 'siyuan/types' {
         setPluginEnabled(key: string, enabled: boolean): Promise<void>;
         savePluginsEnabled(): Promise<void>;
         setSafeModeEnabled(enabled: boolean): Promise<void>;
-        getPluginStorage<T = unknown>(key: string, filename: string): Promise<T>;
-        setPluginStorage(key: string, filename: string, content: any): Promise<void>;
-
+        setPluginStorage(pluginKey: string, filename: string, content: any): Promise<void>;
+        getPluginStorage(pluginKey: string, filename: string): Promise<Response>;
     }
     export interface ISystemManager {
         saveToLocal(p: string, content: string): Promise<void>;
@@ -235,6 +250,7 @@ declare module 'siyuan/types' {
         PLUGIN_SYSTEM_AUTO_UPDATE: boolean;
         PLUGIN_SYSTEM_PLUGIN: Array<PluginEnableConfig>;
         PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN: Array<PluginEnableConfig>;
+        PLUGIN_STORE_URL: string;
     }
     export type Listener = (...args: any) => void;
     export interface IEventBus {
@@ -268,6 +284,14 @@ declare module 'siyuan/types' {
         unregisterKeyboardEvent(shortcut: string): any;
         registerKeyboardEventFromPlugin(command: Command): any;
         unregisterKeyboardEventFromPlugin(command: Command): any;
+    }
+    export interface INotification {
+        show(): void;
+    }
+    export interface INoticationOption {
+        type: 'error' | 'info';
+        message: string;
+        timeout?: number;
     }
 }
 

@@ -115,11 +115,10 @@ export class StorageManager implements IStorageManager {
         try {
             if (this.isFileNameIllegal(filename)) {
                 showErrorMessage(`插件${pluginKey}存储文件名不合法`);
-                return false;
+                return;
             }
             await this.addPluginStorageFolderIfNotExist(pluginKey);
             await serverApi.putFile(`/data/plugins/.storage/${pluginKey}/${filename}`, content);
-            return true;
         } catch (e) {
             showErrorMessage(`插件${pluginKey}存储保存失败`, 2000);
         }

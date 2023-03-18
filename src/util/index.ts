@@ -1,4 +1,4 @@
-import { Notification } from "@/internal/classes/notification";
+import { Notification } from "../internal/classes/notification";
 import type { Stats } from "fs";
 import { PROCESS_ENV } from "../config";
 
@@ -56,15 +56,9 @@ export function isExists(p: string) {
     }
 }
 
-abstract class Info {
-    info: string;
-    constructor(info: string) {
-        this.info = info;
-    }
-}
-
-export class Warning extends Info {}
-export class Error extends Info {}
+export class Info { constructor(private message: string ) {} }
+export class Error { constructor(private message: string ) {} }
+export class Warning { constructor(private message: string ) {} }
 
 export const showInfoMessage = (message: string, timeout?: number) => new Notification({ type: 'info', message, timeout }).show();
 export const showErrorMessage = (message: string, timeout?: number) => new Notification({ type: 'error', message, timeout }).show();

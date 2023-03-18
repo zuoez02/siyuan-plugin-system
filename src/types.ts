@@ -45,6 +45,8 @@ export interface IStorageManager {
     setPluginEnabled(key: string, enabled: boolean): Promise<void>;
     savePluginsEnabled(): Promise<void>;
     setSafeModeEnabled(enabled: boolean): Promise<void>;
+    setPluginStorage(pluginKey: string, filename: string, content: any): Promise<void>;
+    getPluginStorage(pluginKey: string, filename: string): Promise<Response>
 }
 
 export interface ISystemManager {
@@ -154,6 +156,10 @@ export interface IShortcut {
     unregisterKeyboardEvent(shortcut: string);
     registerKeyboardEventFromPlugin(command: Command);
     unregisterKeyboardEventFromPlugin(command: Command);
+}
+
+export interface INotification {
+    show(): void;
 }
 
 export interface INoticationOption {

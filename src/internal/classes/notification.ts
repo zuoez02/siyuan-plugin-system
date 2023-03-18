@@ -1,7 +1,7 @@
-import { serverApi } from "@/api";
-import { INoticationOption } from "@/types";
+import { serverApi } from "../../api";
+import { INoticationOption, INotification } from "../../types";
 
-export class Notification {
+export class Notification implements INotification {
     constructor(private option: INoticationOption) {
         
     }
