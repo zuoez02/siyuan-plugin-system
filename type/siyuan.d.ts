@@ -172,6 +172,9 @@ declare module 'siyuan/types' {
         setPluginEnabled(key: string, enabled: boolean): Promise<void>;
         savePluginsEnabled(): Promise<void>;
         setSafeModeEnabled(enabled: boolean): Promise<void>;
+        getPluginStorage<T = unknown>(key: string, filename: string): Promise<T>;
+        setPluginStorage(key: string, filename: string, content: any): Promise<void>;
+
     }
     export interface ISystemManager {
         saveToLocal(p: string, content: string): Promise<void>;

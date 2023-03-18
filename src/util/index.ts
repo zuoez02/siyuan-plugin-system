@@ -1,5 +1,5 @@
-import { Stats } from "fs";
-import { resolve } from "path";
+import { Notification } from "@/internal/classes/notification";
+import type { Stats } from "fs";
 import { PROCESS_ENV } from "../config";
 
 const path = require('path');
@@ -65,3 +65,6 @@ abstract class Info {
 
 export class Warning extends Info {}
 export class Error extends Info {}
+
+export const showInfoMessage = (message: string, timeout?: number) => new Notification({ type: 'info', message, timeout }).show();
+export const showErrorMessage = (message: string, timeout?: number) => new Notification({ type: 'error', message, timeout }).show();

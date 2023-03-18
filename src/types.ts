@@ -1,6 +1,9 @@
 export interface IPlugin {
     onload(): void;
     onunload(): void;
+    registerCommand(command: IPluginCommand);
+    loadStorage(filename: string): Promise<Response>;
+    writeStorage(filename: string, content: any): Promise<void>;
 }
 
 export interface PluginConstructor {
@@ -151,4 +154,10 @@ export interface IShortcut {
     unregisterKeyboardEvent(shortcut: string);
     registerKeyboardEventFromPlugin(command: Command);
     unregisterKeyboardEventFromPlugin(command: Command);
+}
+
+export interface INoticationOption {
+    type: 'error' | 'info',
+    message: string;
+    timeout?: number;
 }

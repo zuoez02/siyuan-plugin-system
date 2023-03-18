@@ -6,6 +6,7 @@ import { log } from "../util";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../config";
 import { container } from "@/container";
+import { IStorageManager } from "siyuan/types";
 
 let components: { [key: string]: any };
 
@@ -34,21 +35,14 @@ export class PluginLoader implements IPluginLoader {
     }
 
     async loadAllInternalPlugins() {
-        internalPlugins.forEach((p) => {
+        internalPlugins.forEach(async (p) => {
             const plug = new p.plugin();
             if (!(plug instanceof Plugin)) {
                 throw new Error(`Failed to load plugin ${p.name}`);
             }
             log(`Load internal plugin: ${p.key}(${p.name})`);
-            plug.registerCommand = (command: IPluginCommand) => {
-                const cm = container.get<ICommandManager>(TYPES.CommandManager);
-                cm.registerCommand({
-                    ...command,
-                    plugin: p.key,
-                    pluginName: p.name,
-                });
-            }
-            plug.onload();
+            this.addAdditionalMethod(plug, p.key, p.name);
+            await plug.onload();
             this.loadedPlugins.set(p.key, plug);
         })
     }
@@ -77,14 +71,7 @@ export class PluginLoader implements IPluginLoader {
                 throw new Error(`Failed to load plugin ${plugin.name}`);
             }
             log(`Load internal plugin: ${plugin.key}(${plugin.name})`);
-            plug.registerCommand = (command: IPluginCommand) => {
-                const cm = container.get<ICommandManager>(TYPES.CommandManager);
-                cm.registerCommand({
-                    ...command,
-                    plugin: plugin.key,
-                    pluginName: plugin.name,
-                });
-            }
+            this.addAdditionalMethod(plug, plugin.key, plugin.name);
             await plug.onload();
             this.loadedPlugins.set(plugin.key, plug);
             return;
@@ -110,14 +97,7 @@ export class PluginLoader implements IPluginLoader {
         if (!(plug instanceof Plugin)) {
             throw new Error(`Failed to load plugin ${pluginName}`);
         }
-        plug.registerCommand = (command: IPluginCommand) => {
-            const cm = container.get<ICommandManager>(TYPES.CommandManager);
-            cm.registerCommand({
-                ...command,
-                plugin: plugin.key,
-                pluginName,
-            });
-        }
+        this.addAdditionalMethod(plug, plugin.key, pluginName);
         await plug.onload();
         this.loadedPlugins.set(plugin.key, plug);
     }
@@ -127,7 +107,7 @@ export class PluginLoader implements IPluginLoader {
         if (!plugin) {
             return;
         }
-        await plugin.onunload();
+        plugin.onunload();
         container.get<ICommandManager>(TYPES.CommandManager).unregisterCommandByPlugin(key);
         this.loadedPlugins.delete(key);
     }
@@ -144,9 +124,28 @@ export class PluginLoader implements IPluginLoader {
         return this.loadEnabledPlugins(plugins);
     }
 
-    generateRequiredModules() {
+    public generateRequiredModules() {
         components = {
             "siyuan": api,
+        };
+    }
+
+    private addAdditionalMethod(plugin: Plugin, pluginKey: string, pluginName: string) {
+        plugin.registerCommand = (command: IPluginCommand) => {
+            const cm = container.get<ICommandManager>(TYPES.CommandManager);
+            cm.registerCommand({
+                ...command,
+                plugin: pluginKey,
+                pluginName,
+            });
+        }
+
+        const sm = container.get<IStorageManager>(TYPES.StorageManager);
+        plugin.writeStorage = async (filename: string, content: any) => {
+            return await sm.setPluginStorage(pluginKey, filename, content);
+        };
+        plugin.loadStorage = async (filename: string) => {
+            return await sm.getPluginStorage(pluginKey, filename);
         };
     }
 }

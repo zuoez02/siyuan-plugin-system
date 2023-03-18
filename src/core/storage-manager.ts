@@ -4,6 +4,9 @@ import { defaultConfig, PLUGIN_SYSTEM_PLUGIN, PLUGIN_SYSTEM_SAFE_MODE_ENABLED, P
 import { internalPlugins } from "../internal";
 import { TYPES } from "../config";
 import { IPluginFileManager, IStorageManager, PluginConfig, PluginEnableConfig, PluginManifest } from "../types";
+import { serverApi } from "@/api";
+import { showErrorMessage } from "@/util";
+import sanitize from 'sanitize-filename';
 
 @injectable()
 export class StorageManager implements IStorageManager {
@@ -11,15 +14,12 @@ export class StorageManager implements IStorageManager {
 
     private config: PluginConfig;
 
-    private initialized: boolean;
-
     private internalPlugins: PluginManifest[];
 
     private thirdPartyPlugins: PluginManifest[];
 
     constructor(@inject(TYPES.PluginFileManager) pluginFileManager) {
         this.config = Object.assign({}, defaultConfig);
-        this.initialized = false;
         this.pluginFileManager = pluginFileManager;
     }
 
@@ -49,7 +49,6 @@ export class StorageManager implements IStorageManager {
         this.initInternalEnabled();    
         await this.savePluginsEnabled();
 
-        this.initialized = true;
         return this;
     }
 
@@ -110,5 +109,37 @@ export class StorageManager implements IStorageManager {
     public async savePluginsEnabled() {
         await this.set(PLUGIN_SYSTEM_PLUGIN, this.internalPlugins.map((p) => ({ key: p.key, enabled: p.enabled })));
         return this.set(PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN, this.thirdPartyPlugins.map((p) => ({ key: p.key, enabled: p.enabled })));
+    }
+
+    public async setPluginStorage(pluginKey: string, filename: string, content: any) {
+        try {
+            if (this.isFileNameIllegal(filename)) {
+                showErrorMessage(`插件${pluginKey}存储文件名不合法`);
+                return false;
+            }
+            await this.addPluginStorageFolderIfNotExist(pluginKey);
+            await serverApi.putFile(`/data/plugins/.storage/${pluginKey}/${filename}`, content);
+            return true;
+        } catch (e) {
+            showErrorMessage(`插件${pluginKey}存储保存失败`, 2000);
+        }
+    }
+
+    public async getPluginStorage(pluginKey: string, filename: string): Promise<Response> {
+        try {
+            return await serverApi.getFile(`/data/plugins/.storage/${pluginKey}/${filename}`);
+        } catch (e) {
+            showErrorMessage(`插件${pluginKey}存储保存失败`, 2000);
+            return null;
+        }
+    }
+
+    private async addPluginStorageFolderIfNotExist(pluginKey: string) {
+        const folder = `/data/plugins/.storage/${pluginKey}`;
+        await serverApi.putFile(folder, null, true);
+    }
+
+    private isFileNameIllegal(filename: string) {
+        return filename !== sanitize(filename);
     }
 }

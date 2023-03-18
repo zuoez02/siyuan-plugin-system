@@ -1,4 +1,3 @@
-import { Stats } from 'fs';
 import { injectable } from 'inversify';
 import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
 import { PluginManifest } from '../types';
