@@ -1,4 +1,5 @@
 import { ISettingTab } from "../types";
+import { getLogger } from '../util';
 
 function insertBefore(positionEl: Element, el: Element) {
     return positionEl.insertAdjacentElement('beforebegin', el)
@@ -28,3 +29,5 @@ export function addToolbarRight(el: Element) {
 export function addSettingTab(settingTab: ISettingTab) {
     
 }
+
+export const createLogger = (name: string) => getLogger(name); 

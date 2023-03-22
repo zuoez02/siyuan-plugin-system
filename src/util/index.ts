@@ -1,12 +1,15 @@
 import { Notification } from "../internal/classes/notification";
+import LoggerFactory, { LogLevelEnum } from 'zhi-log';
 import type { Stats } from "fs";
 import { PROCESS_ENV } from "../config";
 
 const path = require('path');
 const fs = require('fs');
+const factory = LoggerFactory.customLogFactory(LogLevelEnum.LOG_LEVEL_INFO, 'PluginSystem');
+const pluginSystemLogger = factory.getLogger('plugin system')
 
 export const log = (...p) => {
-    console.log(`[Plugin System] `, ...p)
+    pluginSystemLogger.info(...p);
 };
 
 export const sleep = async (t: number) => {
@@ -62,3 +65,5 @@ export class Warning { constructor(private message: string ) {} }
 
 export const showInfoMessage = (message: string, timeout?: number) => new Notification({ type: 'info', message, timeout }).show();
 export const showErrorMessage = (message: string, timeout?: number) => new Notification({ type: 'error', message, timeout }).show();
+
+export const getLogger = (name: string) => factory.getLogger(name);

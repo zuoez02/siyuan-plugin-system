@@ -19,6 +19,7 @@ specifiers:
   typescript: ^4.9.5
   vite: ^4.1.4
   vite-plugin-replace: ^0.1.1
+  zhi-log: ^1.6.1
 
 dependencies:
   '@microsoft/api-extractor': 7.34.4_@types+node@18.14.1
@@ -37,6 +38,7 @@ dependencies:
   typescript: 4.9.5
   vite: 4.1.4_4dekbj63vpjjfl7rixood357km
   vite-plugin-replace: 0.1.1_vite@4.1.4
+  zhi-log: 1.6.1
 
 devDependencies:
   '@types/node': 18.14.1
@@ -463,6 +465,11 @@ packages:
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
+  /callsites/4.0.0:
+    resolution: {integrity: sha512-y3jRROutgpKdz5vzEhWM34TidDU8vkJppF8dszITeb1PQmSqV3DTxyV8G/lyO/DNvtE1YTedehmw9MPZsCBHxQ==}
+    engines: {node: '>=12.20'}
+    dev: false
+
   /camelcase/3.0.0:
     resolution: {integrity: sha512-4nhGqUkc4BqbBBB4Q6zLuD7lzzrHYrjKGeYaEji/3tFR5VdJu9v+LilhGIVe8wxEJPPOeWo7eg8dwY13TZ1BNg==}
     engines: {node: '>=0.10.0'}
@@ -837,6 +844,15 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
+  /loglevel-plugin-prefix/0.8.4:
+    resolution: {integrity: sha512-WpG9CcFAOjz/FtNht+QJeGpvVl/cdR6P0z6OcXSkr8wFJOsV2GRj2j10JLfjuA4aYkcKCNIEqRGCyTife9R8/g==}
+    dev: false
+
+  /loglevel/1.8.1:
+    resolution: {integrity: sha512-tCRIJM51SHjAayKwC+QAg8hT8vg6z7GSgLJKGvzuPb1Wc+hLzqtuVLxp6/HzSPOozuK+8ErAhy7U/sVzw8Dgfg==}
+    engines: {node: '>= 0.6.0'}
     dev: false
 
   /lru-cache/6.0.0:
@@ -1360,4 +1376,17 @@ packages:
       validator: 13.9.0
     optionalDependencies:
       commander: 9.5.0
+    dev: false
+
+  /zhi-env/1.10.0:
+    resolution: {integrity: sha512-CqyIOlAV1QZ3SiBZu2UP63OAD+wAxyJ9DW3u1MsEmFwAfBC69IDGXRp5TU33IQ32DWKqm95+CkFoTjb1r87OhQ==}
+    dev: false
+
+  /zhi-log/1.6.1:
+    resolution: {integrity: sha512-BXXQ2FMqNKFotLLPUDyxtz74ZJl8Ihzxz6ZE8H3dTdc58GW5DLARN4jcyAq4EDGTRyzkrmCMsPG3Gf62tG+1kw==}
+    dependencies:
+      callsites: 4.0.0
+      loglevel: 1.8.1
+      loglevel-plugin-prefix: 0.8.4
+      zhi-env: 1.10.0
     dev: false
