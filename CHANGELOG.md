@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.19
++ 修改图标
++ eslint重构代码
+
 ## v0.3.13
 + 增加插件商店，并可配置插件商店地址
 + 暴露PluginSystem及Ioc容器到window对象

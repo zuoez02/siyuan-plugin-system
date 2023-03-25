@@ -19,7 +19,7 @@ module.exports = {
     rules: {
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
-        quotes: [2, 'single' ],
+        quotes: [2, 'single'],
         semi: ['error', 'always'],
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
