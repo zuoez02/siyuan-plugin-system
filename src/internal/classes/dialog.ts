@@ -1,7 +1,7 @@
 /**
  * Copy from siyuan source code
  */
-import { genUUID } from "../../util";
+import { genUUID } from '../../util';
 
 export class Dialog {
     private destroyCallback: () => void;
@@ -10,30 +10,30 @@ export class Dialog {
     private disableClose: boolean;
 
     constructor(options: {
-        title?: string,
-        transparent?: boolean,
-        content: string,
-        width?: string
-        height?: string,
-        destroyCallback?: () => void
-        disableClose?: boolean
-        disableAnimation?: boolean
+        title?: string;
+        transparent?: boolean;
+        content: string;
+        width?: string;
+        height?: string;
+        destroyCallback?: () => void;
+        disableClose?: boolean;
+        disableAnimation?: boolean;
     }) {
         this.disableClose = options.disableClose;
         this.id = genUUID();
         window.siyuan.dialogs.push(this);
         this.destroyCallback = options.destroyCallback;
-        this.element = document.createElement("div") as HTMLElement;
+        this.element = document.createElement('div') as HTMLElement;
 
         this.element.innerHTML = `<div class="b3-dialog">
-<div class="b3-dialog__scrim"${options.transparent ? 'style="background-color:transparent"' : ""}></div>
-<div class="b3-dialog__container" style="width:${options.width || "auto"}">
-  <svg class="b3-dialog__close fn__a${this.disableClose ? " fn__none" : ""}"><use xlink:href="#iconClose"></use></svg>
-  <div class="b3-dialog__header${options.title ? "" : " fn__none"}" onselectstart="return false;">${options.title || ""}</div>
-  <div style="height:${options.height || "auto"}">${options.content}</div>
+<div class="b3-dialog__scrim"${options.transparent ? 'style="background-color:transparent"' : ''}></div>
+<div class="b3-dialog__container" style="width:${options.width || 'auto'}">
+  <svg class="b3-dialog__close fn__a${this.disableClose ? ' fn__none' : ''}"><use xlink:href="#iconClose"></use></svg>
+  <div class="b3-dialog__header${options.title ? '' : ' fn__none'}" onselectstart="return false;">${options.title || ''}</div>
+  <div style="height:${options.height || 'auto'}">${options.content}</div>
 </div></div>`;
 
-        this.element.querySelector(".b3-dialog__scrim").addEventListener("click", (event) => {
+        this.element.querySelector('.b3-dialog__scrim').addEventListener('click', (event) => {
             if (!this.disableClose) {
                 this.destroy();
             }
@@ -43,7 +43,7 @@ export class Dialog {
             window.siyuan.menus.menu.remove();
         });
         if (!this.disableClose) {
-            this.element.querySelector(".b3-dialog__close").addEventListener("click", (event) => {
+            this.element.querySelector('.b3-dialog__close').addEventListener('click', (event) => {
                 this.destroy();
                 event.preventDefault();
                 event.stopPropagation();
@@ -51,10 +51,10 @@ export class Dialog {
         }
         document.body.append(this.element);
         if (options.disableAnimation) {
-            this.element.classList.add("b3-dialog--open");
+            this.element.classList.add('b3-dialog--open');
         } else {
             setTimeout(() => {
-                this.element.classList.add("b3-dialog--open");
+                this.element.classList.add('b3-dialog--open');
             });
         }
         // https://github.com/siyuan-note/siyuan/issues/6783
@@ -78,22 +78,21 @@ export class Dialog {
 
     public bindInput(inputElement: HTMLInputElement | HTMLTextAreaElement, enterEvent?: () => void) {
         inputElement.focus();
-        inputElement.addEventListener("keydown", (event: KeyboardEvent) => {
+        inputElement.addEventListener('keydown', (event: KeyboardEvent) => {
             if (event.isComposing) {
                 event.preventDefault();
                 return;
             }
-            if (event.key === "Escape") {
+            if (event.key === 'Escape') {
                 this.destroy();
                 event.preventDefault();
                 event.stopPropagation();
                 return;
             }
-            if (event.key === "Enter" && enterEvent) {
+            if (event.key === 'Enter' && enterEvent) {
                 enterEvent();
                 event.preventDefault();
             }
         });
     }
-
 }

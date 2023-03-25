@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { container } from "@/container";
-    import { TYPES } from "@/config";
-    import { IPluginSystem, IStorageManager, PluginManifest } from "@/types";
-    import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from "@/core/plugin-config";
+    import { onMount } from 'svelte';
+    import { container } from '@/container';
+    import { TYPES } from '@/config';
+    import { IPluginSystem, IStorageManager, PluginManifest } from '@/types';
+    import { PLUGIN_SYSTEM_SAFE_MODE_ENABLED } from '@/core/plugin-config';
 
     const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
     const pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem);
@@ -46,7 +46,7 @@
                     <div class="fn__flex-1">
                         {plugin.name}
                         <div class="b3-label__text">
-                            {plugin.description || "无描述内容"}
+                            {plugin.description || '无描述内容'}
                         </div>
                     </div>
                     <span class="fn__space" />
@@ -72,7 +72,7 @@
                     <div class="fn__flex-1">
                         {plugin.name}
                         <div class="b3-label__text">
-                            {plugin.description || "无描述内容"}
+                            {plugin.description || '无描述内容'}
                         </div>
                     </div>
                     <span class="fn__space" />

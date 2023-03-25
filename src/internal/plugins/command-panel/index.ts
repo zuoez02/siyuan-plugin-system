@@ -1,7 +1,7 @@
-import { Plugin } from "@/api/plugin";
-import { Dialog } from "@/internal/classes";
-import { Shortcut } from "@/core/shortcut";
-import CommandPanel__SvelteComponent_ from "./command-panel.svelte";
+import { Plugin } from '@/api/plugin';
+import { Dialog } from '@/internal/classes';
+import { Shortcut } from '@/core/shortcut';
+import CommandPanel__SvelteComponent_ from './command-panel.svelte';
 
 export class CommandPanelPlugin extends Plugin {
     shortcut: Shortcut;
@@ -12,7 +12,7 @@ export class CommandPanelPlugin extends Plugin {
             shortcut: 'ctrl+shift+p',
             callback: () => {
                 this.showPanel();
-            }
+            },
         });
     }
 
@@ -22,6 +22,6 @@ export class CommandPanelPlugin extends Plugin {
             new CommandPanel__SvelteComponent_({
                 target: document.getElementById('command-panel'),
             });
-        })
+        });
     }
 }

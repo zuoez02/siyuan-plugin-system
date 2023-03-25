@@ -1,18 +1,17 @@
-import { Plugin } from "../api/plugin";
-import api from "../api";
-import { IPluginCommand, ICommandManager, IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from "../types";
-import { internalPlugins } from "../internal";
-import { log } from "../util";
-import { inject, injectable } from "inversify";
-import { TYPES } from "../config";
-import { container } from "@/container";
-import { IStorageManager } from "siyuan/types";
+import { Plugin } from '../api/plugin';
+import api from '../api';
+import { IPluginCommand, ICommandManager, IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from '../types';
+import { internalPlugins } from '../internal';
+import { log } from '../util';
+import { inject, injectable } from 'inversify';
+import { TYPES } from '../config';
+import { container } from '@/container';
+import { IStorageManager } from 'siyuan/types';
 
 let components: { [key: string]: any };
 
 @injectable()
 export class PluginLoader implements IPluginLoader {
-
     pluginFileManager: IPluginFileManager;
 
     loadedPlugins: Map<string, IPlugin>;
@@ -31,7 +30,7 @@ export class PluginLoader implements IPluginLoader {
                 continue;
             }
             await this.loadPlugin(p);
-        };
+        }
     }
 
     async loadAllInternalPlugins() {
@@ -44,7 +43,7 @@ export class PluginLoader implements IPluginLoader {
             this.addAdditionalMethod(plug, p.key, p.name);
             await plug.onload();
             this.loadedPlugins.set(p.key, plug);
-        })
+        });
     }
 
     async loadAllLocalPlugins() {
@@ -79,7 +78,7 @@ export class PluginLoader implements IPluginLoader {
         const exports: { [key: string]: any } = {};
         const module = { exports };
         function run(script: string, name: string) {
-            return eval("(function anonymous(require,module,exports){".concat(script, "\n})\n//# sourceURL=").concat(name, "\n"));
+            return eval('(function anonymous(require,module,exports){'.concat(script, '\n})\n//# sourceURL=').concat(name, '\n'));
         }
         const __require = (name: string) => {
             if (components[name]) {
@@ -113,7 +112,7 @@ export class PluginLoader implements IPluginLoader {
     }
 
     async unloadThirdPartyPlugins(plugins: PluginManifest[]) {
-        const keys = plugins.filter((p) => p.enabled).map(p => p.key);
+        const keys = plugins.filter((p) => p.enabled).map((p) => p.key);
         for (const k of keys) {
             log(`unload third party plugin: ${k}`);
             await this.unloadPlugin(k);
@@ -126,7 +125,7 @@ export class PluginLoader implements IPluginLoader {
 
     public generateRequiredModules() {
         components = {
-            "siyuan": api,
+            siyuan: api,
         };
     }
 
@@ -138,7 +137,7 @@ export class PluginLoader implements IPluginLoader {
                 plugin: pluginKey,
                 pluginName,
             });
-        }
+        };
 
         const sm = container.get<IStorageManager>(TYPES.StorageManager);
         plugin.writeStorage = async (filename: string, content: any) => {

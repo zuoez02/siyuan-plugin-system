@@ -21,8 +21,8 @@ export const PLUGIN_SYS_ABS_PATH = path.join(getCrossPlatformAppDataFolder(), '.
 export const config = () => ({ token: window.siyuan.config.api.token });
 
 export const TYPES = {
-    StorageManager: "StorageManager",
-    PluginSystem: "PluginSystem",
+    StorageManager: 'StorageManager',
+    PluginSystem: 'PluginSystem',
     SystemManager: 'PluginSystemLocalManager',
     PluginLoader: 'PluginLoader',
     PluginFileManager: 'PluginFileManager',

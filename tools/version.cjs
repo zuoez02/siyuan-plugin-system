@@ -1,4 +1,4 @@
-const version = process.argv[2]
+const version = process.argv[2];
 // replace in VERSION
 const fs = require('fs');
 const path = require('path');

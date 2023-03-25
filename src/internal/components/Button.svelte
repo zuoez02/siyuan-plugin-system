@@ -3,4 +3,4 @@
     export let disabled: boolean = false;
 </script>
 
-<button on:click={onClick} disabled={disabled} class="b3-button"><slot /></button>
+<button on:click={onClick} {disabled} class="b3-button"><slot /></button>

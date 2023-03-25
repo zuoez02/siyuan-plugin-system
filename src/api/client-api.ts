@@ -1,12 +1,11 @@
-import { ISettingTab } from "../types";
 import { getLogger } from '../util';
 
 function insertBefore(positionEl: Element, el: Element) {
-    return positionEl.insertAdjacentElement('beforebegin', el)
+    return positionEl.insertAdjacentElement('beforebegin', el);
 }
 
 function insertAfter(positionEl: Element, el: Element) {
-    return positionEl.insertAdjacentElement('afterend', el)
+    return positionEl.insertAdjacentElement('afterend', el);
 }
 
 export function addToolbarLeft(el: Element) {
@@ -25,9 +24,4 @@ export function addToolbarRight(el: Element) {
     insertAfter(title[0], el);
 }
 
-
-export function addSettingTab(settingTab: ISettingTab) {
-    
-}
-
-export const createLogger = (name: string) => getLogger(name); 
+export const createLogger = (name: string) => getLogger(name);

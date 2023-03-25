@@ -1,11 +1,10 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
 import { VERSION } from './config';
 import { log } from './util';
 import { container } from './container';
 import { TYPES } from './config';
 import { IPluginSystem } from './types';
-
 
 if (!window.pluginSystem) {
     log('Siyuan Plugin System loading...');

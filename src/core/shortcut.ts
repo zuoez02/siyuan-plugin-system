@@ -1,12 +1,12 @@
-import { TYPES } from "@/config";
-import { Command, IEventBus, IShortcut } from "@/types";
-import { log } from "@/util";
+import { TYPES } from '@/config';
+import { Command, IEventBus, IShortcut } from '@/types';
+import { log } from '@/util';
 import hotkeys from 'hotkeys-js';
-import { inject, injectable } from "inversify";
+import { inject, injectable } from 'inversify';
 
-hotkeys.filter = function (event) {
+hotkeys.filter = function () {
     return true;
-}
+};
 
 @injectable()
 export class Shortcut implements IShortcut {
@@ -14,7 +14,7 @@ export class Shortcut implements IShortcut {
 
     private option = {
         capture: true,
-    }
+    };
 
     public constructor(@inject(TYPES.EventBus) eventBus: IEventBus) {
         log('Initialize shortcut subsystem');
@@ -23,7 +23,7 @@ export class Shortcut implements IShortcut {
 
     public registerKeyboardEvent(shortcut: string, callback: (e: KeyboardEvent) => void) {
         hotkeys(shortcut, this.option, callback);
-        this.eventBus.on(shortcut.toString(), callback,);
+        this.eventBus.on(shortcut.toString(), callback);
     }
 
     public unregisterKeyboardEvent(shortcut: string) {

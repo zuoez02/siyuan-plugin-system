@@ -1,11 +1,11 @@
-import { inject, injectable } from "inversify";
-import { getLocalStorage, setStorageVal } from "../api/server-api";
-import { defaultConfig, PLUGIN_SYSTEM_PLUGIN, PLUGIN_SYSTEM_SAFE_MODE_ENABLED, PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN } from "./plugin-config";
-import { internalPlugins } from "../internal";
-import { TYPES } from "../config";
-import { IPluginFileManager, IStorageManager, PluginConfig, PluginEnableConfig, PluginManifest } from "../types";
-import { serverApi } from "@/api";
-import { showErrorMessage } from "@/util";
+import { inject, injectable } from 'inversify';
+import { getLocalStorage, setStorageVal } from '../api/server-api';
+import { defaultConfig, PLUGIN_SYSTEM_PLUGIN, PLUGIN_SYSTEM_SAFE_MODE_ENABLED, PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN } from './plugin-config';
+import { internalPlugins } from '../internal';
+import { TYPES } from '../config';
+import { IPluginFileManager, IStorageManager, PluginConfig, PluginEnableConfig, PluginManifest } from '../types';
+import { serverApi } from '@/api';
+import { showErrorMessage } from '@/util';
 import sanitize from 'sanitize-filename';
 
 @injectable()
@@ -46,7 +46,7 @@ export class StorageManager implements IStorageManager {
         this.thirdPartyPlugins = await this.pluginFileManager.getAllPlugins();
         this.internalPlugins = [...internalPlugins];
         this.init3rdPartyEnabled();
-        this.initInternalEnabled();    
+        this.initInternalEnabled();
         await this.savePluginsEnabled();
 
         return this;
@@ -107,8 +107,14 @@ export class StorageManager implements IStorageManager {
     }
 
     public async savePluginsEnabled() {
-        await this.set(PLUGIN_SYSTEM_PLUGIN, this.internalPlugins.map((p) => ({ key: p.key, enabled: p.enabled })));
-        return this.set(PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN, this.thirdPartyPlugins.map((p) => ({ key: p.key, enabled: p.enabled })));
+        await this.set(
+            PLUGIN_SYSTEM_PLUGIN,
+            this.internalPlugins.map((p) => ({ key: p.key, enabled: p.enabled }))
+        );
+        return this.set(
+            PLUGIN_SYSTEM_THIRD_PARTY_PLUGIN,
+            this.thirdPartyPlugins.map((p) => ({ key: p.key, enabled: p.enabled }))
+        );
     }
 
     public async setPluginStorage(pluginKey: string, filename: string, content: any) {

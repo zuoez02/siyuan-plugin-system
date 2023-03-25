@@ -1,5 +1,5 @@
-import { IEventBus, Listener } from "@/types";
-import { injectable } from "inversify";
+import { IEventBus, Listener } from '@/types';
+import { injectable } from 'inversify';
 
 @injectable()
 export class EventBus implements IEventBus {
@@ -38,7 +38,7 @@ export class EventBus implements IEventBus {
         if (this.eventListeners[eventName]) {
             this.eventListeners[eventName].forEach((cb) => {
                 cb(...args);
-            })
+            });
         }
     }
 }

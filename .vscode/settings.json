@@ -1,0 +1,6 @@
+{
+    "svelte.plugin.svelte.defaultScriptLanguage": "ts",
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode"
+    },
+}

@@ -7,7 +7,7 @@ export interface IPlugin {
 }
 
 export interface PluginConstructor {
-    new(): IPlugin
+    new (): IPlugin;
 }
 
 export interface StorePluginManifest {
@@ -46,15 +46,15 @@ export interface IStorageManager {
     savePluginsEnabled(): Promise<void>;
     setSafeModeEnabled(enabled: boolean): Promise<void>;
     setPluginStorage(pluginKey: string, filename: string, content: any): Promise<void>;
-    getPluginStorage(pluginKey: string, filename: string): Promise<Response>
+    getPluginStorage(pluginKey: string, filename: string): Promise<Response>;
 }
 
 export interface ISystemManager {
     saveToLocal(p: string, content: string): Promise<void>;
     createFile(p: string): Promise<string>;
-    localCacheInit(): Promise<void>
+    localCacheInit(): Promise<void>;
     delayAutoUpgrade(): void;
-    tryUpgrade(): Promise<void>
+    tryUpgrade(): Promise<void>;
     getOnlineVersion(): Promise<string>;
     upgrade(): Promise<void>;
 }
@@ -87,7 +87,7 @@ export interface IPluginFileManager {
 }
 
 export interface ISettingTab {
-    key: string
+    key: string;
     name: string;
     settings: ISetting[];
 }
@@ -163,7 +163,7 @@ export interface INotification {
 }
 
 export interface INoticationOption {
-    type: 'error' | 'info',
+    type: 'error' | 'info';
     message: string;
     timeout?: number;
 }

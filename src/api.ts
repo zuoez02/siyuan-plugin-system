@@ -12,4 +12,4 @@ export default {
     Plugin,
     Menu,
     Dialog,
-}
+};

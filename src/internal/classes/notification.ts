@@ -1,10 +1,8 @@
-import { serverApi } from "../../api";
-import { INoticationOption, INotification } from "../../types";
+import { serverApi } from '../../api';
+import { INoticationOption, INotification } from '../../types';
 
 export class Notification implements INotification {
-    constructor(private option: INoticationOption) {
-        
-    }
+    constructor(private option: INoticationOption) {}
 
     show() {
         if (this.option.type === 'error') {

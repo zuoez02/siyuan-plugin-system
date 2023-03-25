@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { config } from '../config';
 import { genUUID } from '../util';
 
@@ -418,9 +419,7 @@ export async function updateBlock(id, dataType, data) {
 
 export async function deleteBlock(id) {
     let url = '/api/block/deleteBlock';
-    return parseBody(
-        request(url, { id })
-    );
+    return parseBody(request(url, { id }));
 }
 
 export async function getSysFonts() {
@@ -482,7 +481,7 @@ export async function pushErrMsg(message = null, text = null, timeout = 7000) {
 }
 
 export async function setStorageVal(key: string, val: any) {
-    const url = "/api/storage/setLocalStorageVal";
+    const url = '/api/storage/setLocalStorageVal';
     const data = {
         app: genUUID(),
         key,
@@ -492,6 +491,6 @@ export async function setStorageVal(key: string, val: any) {
 }
 
 export async function getLocalStorage() {
-    const url = "/api/storage/getLocalStorage";
+    const url = '/api/storage/getLocalStorage';
     return parseBody(request(url, null));
 }

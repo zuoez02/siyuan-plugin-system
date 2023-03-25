@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
 import { PluginManifest } from '../types';
-import { error, isDir, isExists, log } from "../util";
+import { error, isDir, isExists, log } from '../util';
 
 const fs = require('fs');
 const path = require('path');
@@ -13,16 +13,24 @@ export const SCRIPT = 'main.js';
 @injectable()
 export class PluginFileManager {
     async scanPlugins(pluginFolder: string): Promise<string[]> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             fs.readdir(pluginFolder, (err, files) => {
                 if (err) {
                     resolve([]);
                     return;
                 }
-                resolve(files.filter((f) => {
-                    return isDir(path.join(pluginFolder, f)) && isExists(path.join(pluginFolder, f, MANIFEST)) && isExists(path.join(pluginFolder, f, SCRIPT));
-                })?.map((g) => path.resolve(pluginFolder, g)) || []);
-            })
+                resolve(
+                    files
+                        .filter((f) => {
+                            return (
+                                isDir(path.join(pluginFolder, f)) &&
+                                isExists(path.join(pluginFolder, f, MANIFEST)) &&
+                                isExists(path.join(pluginFolder, f, SCRIPT))
+                            );
+                        })
+                        ?.map((g) => path.resolve(pluginFolder, g)) || []
+                );
+            });
         });
     }
 
@@ -55,7 +63,7 @@ export class PluginFileManager {
     async getAllPlugins(): Promise<PluginManifest[]> {
         const plugins = await this.scanPlugins(path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
         if (!plugins || !plugins.length) {
-            log("No plugin found in " + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
+            log('No plugin found in ' + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
             return [];
         }
         const result: PluginManifest[] = [];

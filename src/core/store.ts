@@ -1,11 +1,11 @@
-import { TYPES } from "@/config";
-import { PLUGIN_STORE_URL } from "@/core/plugin-config";
-import { IStorageManager, StorePluginManifest, StorePluginStatus } from "@/types";
-import axios from "axios";
-import { inject, injectable } from "inversify";
+import { TYPES } from '@/config';
+import { PLUGIN_STORE_URL } from '@/core/plugin-config';
+import { IStorageManager, StorePluginManifest, StorePluginStatus } from '@/types';
+import axios, { AxiosResponse } from 'axios';
+import { inject, injectable } from 'inversify';
 import { SemVer } from 'semver';
-import { writeFile } from "@/util/fs";
-import { sleep } from "@/util";
+import { writeFile } from '@/util/fs';
+import { sleep } from '@/util';
 
 @injectable()
 export class Store {
@@ -62,15 +62,15 @@ export class Store {
         if (!storeUrl) {
             return;
         }
-        let res;
+        let res: AxiosResponse;
         try {
-            res = await axios.get(storeUrl + '/plugins.json') as any;
+            res = await axios.get(storeUrl + '/plugins.json');
         } catch (e) {
-            console.error(e)
+            console.error(e);
             return;
         }
         if (Array.isArray(res.data?.plugins)) {
-            for (const pluginKey of res.data?.plugins) {
+            for (const pluginKey of res.data?.plugins || {}) {
                 const plugin = await this.getPluginManifest(`${storeUrl}/${pluginKey}`);
                 this.plugins.push(plugin);
             }
@@ -82,16 +82,16 @@ export class Store {
             return {
                 manifest: value[0],
                 mainJs: value[1],
-            }
-        })
+            };
+        });
     }
 
     public async getPluginManifest(url: string) {
         try {
             const manifest = await axios.get(`${url}/manifest.json`, {
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             });
             return manifest.data;
         } catch (e) {

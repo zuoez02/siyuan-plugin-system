@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { TYPES } from "@/config";
-    import { container } from "@/container";
-    import { Store } from "@/core/store";
-    import Button from "@/internal/components/Button.svelte";
-    import { StorePluginStatus } from "@/types";
-    import { onMount } from "svelte";
+    import { TYPES } from '@/config';
+    import { container } from '@/container';
+    import { Store } from '@/core/store';
+    import Button from '@/internal/components/Button.svelte';
+    import { StorePluginStatus } from '@/types';
+    import { onMount } from 'svelte';
 
     const store = container.get<Store>(TYPES.Store);
     let plugins: StorePluginStatus[] = [];
@@ -32,7 +32,6 @@
         } finally {
             loadingMap[key] = false;
         }
-        
     };
 </script>
 
@@ -48,24 +47,20 @@
                         {plugin.name}
                         {plugin.version}
                         <div class="b3-label__text">
-                            {plugin.description || "无描述内容"}
+                            {plugin.description || '无描述内容'}
                         </div>
                     </div>
                     <span class="fn__space" />
                     {#if loadingMap[plugin.key]}
-                        <Button disabled={true}>下载中...</Button>                    
+                        <Button disabled={true}>下载中...</Button>
                     {:else if plugin.isExist}
                         {#if plugin.needUpgrade}
-                            <Button onClick={() => downloadPlugin(plugin.key)}
-                                >升级</Button
-                            >
+                            <Button onClick={() => downloadPlugin(plugin.key)}>升级</Button>
                         {:else}
                             <Button disabled={true}>已下载</Button>
                         {/if}
                     {:else}
-                        <Button onClick={() => downloadPlugin(plugin.key)}
-                            >下载</Button
-                        >
+                        <Button onClick={() => downloadPlugin(plugin.key)}>下载</Button>
                     {/if}
                 </label>
             {/each}

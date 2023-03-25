@@ -1,8 +1,8 @@
-import { TYPES } from "@/config";
-import { Command, ICommandManager } from "@/types";
-import { Error, log, Warning } from "@/util";
-import { inject, injectable } from "inversify";
-import { Shortcut } from "./shortcut";
+import { TYPES } from '@/config';
+import { Command, ICommandManager } from '@/types';
+import { Error, log, Warning } from '@/util';
+import { inject, injectable } from 'inversify';
+import { Shortcut } from './shortcut';
 
 @injectable()
 export class CommandManager implements ICommandManager {
@@ -15,14 +15,19 @@ export class CommandManager implements ICommandManager {
     }
 
     public registerCommand(command: Command) {
-        if (this.commandList.some((com) => {
-            com.plugin === command.plugin && com.command === command.command;
-        })) {
+        if (
+            this.commandList.some((com) => {
+                com.plugin === command.plugin && com.command === command.command;
+            })
+        ) {
             return new Error('Command is already registered, do not register command repeatly');
         }
-        if (command.shortcut && this.commandList.some((com) => {
-            com.shortcut === command.shortcut
-        })) {
+        if (
+            command.shortcut &&
+            this.commandList.some((com) => {
+                com.shortcut === command.shortcut;
+            })
+        ) {
             return new Warning('shortcut has already registered');
         }
         this.commandList.push(command);
