@@ -61,6 +61,11 @@ export class Dialog {
         window.siyuan.menus.menu.remove();
     }
 
+    static destroyAll() {
+        console.log('fuck');
+        window.siyuan.dialogs.forEach((p) => p.destroy());
+    }
+
     public destroy() {
         this.element.remove();
         // https://github.com/siyuan-note/siyuan/issues/6783

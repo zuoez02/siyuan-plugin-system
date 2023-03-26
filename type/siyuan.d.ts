@@ -72,17 +72,16 @@ declare module 'siyuan/api/server-api' {
 }
 
 declare module 'siyuan/api/client-api' {
-    import { ISettingTab } from "siyuan/types";
     export function addToolbarLeft(el: Element): void;
     export function addToolbarRight(el: Element): void;
-    export function addSettingTab(settingTab: ISettingTab): void;
+    export const createLogger: (name: string) => import("zhi-log").DefaultLogger;
 }
 
 declare module 'siyuan/internal/classes/menu' {
     export interface IMenuItemOption {
         label?: string;
         click?: (element: HTMLElement) => void;
-        type?: "separator" | "submenu" | "readonly";
+        type?: 'separator' | 'submenu' | 'readonly';
         accelerator?: string;
         action?: string;
         id?: string;
@@ -128,13 +127,14 @@ declare module 'siyuan/internal/classes/dialog' {
             disableClose?: boolean;
             disableAnimation?: boolean;
         });
+        static destroyAll(): void;
         destroy(): void;
         bindInput(inputElement: HTMLInputElement | HTMLTextAreaElement, enterEvent?: () => void): void;
     }
 }
 
 declare module 'siyuan/api/plugin' {
-    import { IPlugin, IPluginCommand } from "siyuan/types";
+    import { IPlugin, IPluginCommand } from 'siyuan/types';
     export class Plugin implements IPlugin {
         _id: string;
         onload(): void;

@@ -5,6 +5,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import eslintPlugin from 'vite-plugin-eslint';
 import { replaceCodePlugin } from 'vite-plugin-replace';
 import packageJson from './package.json';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig({
     plugins: [
@@ -20,6 +21,7 @@ export default defineConfig({
                 },
             ],
         }),
+        cssInjectedByJsPlugin(),
     ],
     lib: {
         // Could also be a dictionary or array of multiple entry points
@@ -33,7 +35,21 @@ export default defineConfig({
             '@': resolve('src'),
         },
     },
+    server: {
+        host: '0.0.0.0',
+        port: 8090,
+        watch: {},
+    },
     build: {
+        assetsDir: '',
+        emptyOutDir: false,
+        lib: {
+            entry: 'src/index.ts',
+            formats: ['iife'],
+            name: 'siyuan-plugin-system',
+            fileName: () => 'main.js',
+        },
+        outDir: '',
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'src', 'index.ts'),

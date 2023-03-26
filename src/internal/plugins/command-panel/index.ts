@@ -7,9 +7,11 @@ export class CommandPanelPlugin extends Plugin {
     shortcut: Shortcut;
 
     onload(): void {
+        // console.log('fuck');
         this.registerCommand({
-            command: 'show command panel',
-            shortcut: 'ctrl+shift+p',
+            command: 'Show command panel',
+            description: '显示控制面板',
+            shortcut: 'ctrl+shift+o,command+shift+o',
             callback: () => {
                 this.showPanel();
             },
@@ -17,6 +19,7 @@ export class CommandPanelPlugin extends Plugin {
     }
 
     showPanel() {
+        Dialog.destroyAll();
         new Dialog({ content: '<div id="command-panel"></div>' });
         setImmediate(() => {
             new CommandPanel__SvelteComponent_({

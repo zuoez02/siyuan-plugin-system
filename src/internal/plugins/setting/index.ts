@@ -37,9 +37,15 @@ export class InternalSettingPlugin extends Plugin {
         clientApi.addToolbarRight(internalSettingButton);
 
         this.registerCommand({
-            command: 'settingList',
+            command: 'Show plugin system conifg',
+            description: '显示插件系统配置',
             shortcut: 'command+option+p',
             callback: () => showSettingDialog(),
+        });
+        this.registerCommand({
+            command: 'Reload Window',
+            description: '重载当前窗口',
+            callback: () => window.location.reload(),
         });
     }
 
