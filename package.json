@@ -1,6 +1,6 @@
 {
   "name": "siyuan-plugin-system",
-  "version": "0.3.20",
+  "version": "0.3.21",
   "type": "module",
   "scripts": {
     "build": "vite build",

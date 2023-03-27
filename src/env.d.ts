@@ -17,5 +17,6 @@ declare global {
         siyuanPluginScript?: string;
         pluginSystemVersion?: string;
         pluginSystemIocContainer?: any;
+        pluginSystemSource?: string;
     }
 }

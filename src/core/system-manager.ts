@@ -70,6 +70,10 @@ export class SystemManager implements ISystemManager {
     }
 
     async tryUpgrade() {
+        if (window.pluginSystemSource === 'bazzar') {
+            log('Plugin installed from bazzar version, upgrade skip');
+            return;
+        }
         log('Try getting online version');
         const onlineVersion = await this.getOnlineVersion();
         if (onlineVersion !== VERSION) {
