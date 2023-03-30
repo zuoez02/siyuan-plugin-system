@@ -4,9 +4,8 @@ import { log, reloadWindow, showInfoMessage } from '../util';
 import { inject, injectable } from 'inversify';
 import { PLUGIN_SYSTEM_AUTO_UPDATE } from './plugin-config';
 import { IStorageManager, ISystemManager } from '../types';
-
-const fs = require('fs');
-const path = require('path');
+import { FileClient } from '@/api/file-api';
+import { migrate } from '@/util/migrate';
 
 const pluginScriptPosition = PLUGIN_SYS_ABS_PATH;
 
@@ -19,32 +18,15 @@ export class SystemManager implements ISystemManager {
     }
 
     public async saveToLocal(p: string, content: string) {
-        return new Promise<void>((resolve, reject) => {
-            const { writeFile } = fs;
-            const { Buffer } = require('buffer');
-            const data = new Uint8Array(Buffer.from(content));
-            writeFile(p, data, (err) => {
-                if (err) return reject(err);
-                resolve();
-            });
-        });
-    }
-
-    createFile(p: string) {
-        return new Promise<string>((resolve, reject) => {
-            fs.mkdir(path.dirname(p), { recursive: true }, (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve('Directory created successfully!');
-            });
-        });
+        FileClient.getInstanceApi().fileApi.putFile(p, content);
     }
 
     async localCacheInit() {
         try {
-            fs.statSync(pluginScriptPosition);
-            this.delayAutoUpgrade();
+            const plugin = FileClient.getInstanceApi().fileApi.getFile(pluginScriptPosition);
+            if (plugin !== null) {
+                this.delayAutoUpgrade();
+            }
             return;
         } catch (e) {
             log('Plugin system not found');
@@ -53,7 +35,6 @@ export class SystemManager implements ISystemManager {
         if (!script) {
             return;
         }
-        await this.createFile(pluginScriptPosition);
         await this.saveToLocal(pluginScriptPosition, script);
         this.delayAutoUpgrade();
     }
@@ -95,8 +76,9 @@ export class SystemManager implements ISystemManager {
         if (!script) {
             return;
         }
+        migrate();
+
         showInfoMessage('插件系统升级中，即将自动重载...');
-        await this.createFile(pluginScriptPosition);
         await this.saveToLocal(pluginScriptPosition, script);
         log('Plugin system upgraded, reloading...');
         setTimeout(() => reloadWindow(), 3000);

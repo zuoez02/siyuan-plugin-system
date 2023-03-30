@@ -4,8 +4,8 @@ import { IStorageManager, StorePluginManifest, StorePluginStatus } from '@/types
 import axios, { AxiosResponse } from 'axios';
 import { inject, injectable } from 'inversify';
 import { SemVer } from 'semver';
-import { writeFile } from '@/util/fs';
 import { sleep } from '@/util';
+import { FileClient } from '@/api/file-api';
 
 @injectable()
 export class Store {
@@ -122,9 +122,9 @@ export class Store {
         const manifestJson = files.manifest;
         const mainJs = files.mainJs;
         return await Promise.all([
-            writeFile(`/data/plugins/${key}`, null, true),
-            writeFile(`/data/plugins/${key}/manifest.json`, JSON.stringify(manifestJson), false),
-            writeFile(`/data/plugins/${key}/main.js`, mainJs, false),
+            FileClient.getInstanceApi().fileApi.putFile(`/data/plugins/${key}`, null, true),
+            FileClient.getInstanceApi().fileApi.putFile(`/data/plugins/${key}/manifest.json`, JSON.stringify(manifestJson), false),
+            FileClient.getInstanceApi().fileApi.putFile(`/data/plugins/${key}/main.js`, mainJs, false),
         ]);
     }
 }

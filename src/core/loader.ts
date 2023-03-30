@@ -6,7 +6,8 @@ import { log } from '../util';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../config';
 import { container } from '@/container';
-import { IStorageManager } from 'siyuan/types';
+import { IStorageManager } from '../types';
+import { error } from '../util';
 
 let components: { [key: string]: any };
 
@@ -87,7 +88,12 @@ export class PluginLoader implements IPluginLoader {
             throw new Error(`module ${name} not found`);
         };
         const pluginName = plugin.key;
-        run(plugin.script, plugin.key)(__require, module, exports);
+        try {
+            run(plugin.script, plugin.key)(__require, module, exports);
+        } catch (e) {
+            error('Error plugin:' + plugin.key + ' ->', e);
+            return;
+        }
         let pluginConstructor;
         if (!(pluginConstructor = (module.exports || exports).default || module.exports)) {
             throw new Error(`Failed to load plugin ${pluginName}. No exports detected.`);
@@ -97,8 +103,12 @@ export class PluginLoader implements IPluginLoader {
             throw new Error(`Failed to load plugin ${pluginName}`);
         }
         this.addAdditionalMethod(plug, plugin.key, pluginName);
-        await plug.onload();
-        this.loadedPlugins.set(plugin.key, plug);
+        try {
+            await plug.onload();
+            this.loadedPlugins.set(plugin.key, plug);
+        } catch (e) {
+            error('Error plugin:' + plugin.key + ' ->', e);
+        }
     }
 
     async unloadPlugin(key: string) {

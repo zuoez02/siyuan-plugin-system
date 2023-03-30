@@ -1,10 +1,7 @@
+import { FileClient } from '@/api/file-api';
 import { injectable } from 'inversify';
-import { SIYUAN_DATA_PATH, PLUGIN_FOLDER } from '../config';
 import { PluginManifest } from '../types';
-import { error, isDir, isExists, log } from '../util';
-
-const fs = require('fs');
-const path = require('path');
+import { error, isExists, log } from '../util';
 
 export const MANIFEST = 'manifest.json';
 
@@ -13,37 +10,26 @@ export const SCRIPT = 'main.js';
 @injectable()
 export class PluginFileManager {
     async scanPlugins(pluginFolder: string): Promise<string[]> {
-        return new Promise((resolve) => {
-            fs.readdir(pluginFolder, (err, files) => {
-                if (err) {
-                    resolve([]);
-                    return;
-                }
-                resolve(
-                    files
-                        .filter((f) => {
-                            return (
-                                isDir(path.join(pluginFolder, f)) &&
-                                isExists(path.join(pluginFolder, f, MANIFEST)) &&
-                                isExists(path.join(pluginFolder, f, SCRIPT))
-                            );
-                        })
-                        ?.map((g) => path.resolve(pluginFolder, g)) || []
-                );
-            });
-        });
+        const res = await FileClient.getInstanceApi().fileApi.readDir(pluginFolder);
+        if (!res) {
+            return [];
+        }
+        const files = res;
+        const result: string[] = [];
+        for (const f of files) {
+            if (f.name.startsWith('.')) {
+                continue;
+            }
+            if (f.isDir && (await isExists(`/data/plugins/${f.name}/manifest.json`)) && (await isExists(`/data/plugins/${f.name}/main.js`))) {
+                result.push(`/data/plugins/${f.name}`);
+            }
+        }
+        return result;
     }
 
     async getFileContent(f: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            fs.readFile(f, (err, data) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                return resolve(data.toString('utf8'));
-            });
-        });
+        const res = await FileClient.getInstanceApi().fileApi.getFile(f);
+        return res || '';
     }
 
     async getManifest(manifest: string) {
@@ -61,17 +47,27 @@ export class PluginFileManager {
     }
 
     async getAllPlugins(): Promise<PluginManifest[]> {
-        const plugins = await this.scanPlugins(path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
+        const plugins = await this.scanPlugins('/data/plugins');
         if (!plugins || !plugins.length) {
-            log('No plugin found in ' + path.join(SIYUAN_DATA_PATH, PLUGIN_FOLDER));
+            log('No plugin found in ' + '/data/plugins');
             return [];
         }
         const result: PluginManifest[] = [];
         for (const p of plugins) {
             log('Reading plugin from filesystem: ' + p);
-            const [manifest, script] = await Promise.all([this.getManifest(path.join(p, MANIFEST)), this.getScript(path.join(p, SCRIPT))]);
-            result.push({ ...manifest, script, enabled: false, key: path.basename(p) });
+            const [manifest, script] = await Promise.all([this.getManifest(`${p}/manifest.json`), this.getScript(`${p}/main.js`)]);
+            result.push({ ...manifest, script, enabled: false, key: this.getFolderName(p) });
         }
         return result || [];
+    }
+
+    getFolderName(p) {
+        const f = p.split('/');
+        for (let i = f.length - 1; i >= 0; i--) {
+            if (f[i]) {
+                return f[i];
+            }
+        }
+        return '';
     }
 }

@@ -7,7 +7,6 @@ export class CommandPanelPlugin extends Plugin {
     shortcut: Shortcut;
 
     onload(): void {
-        // console.log('fuck');
         this.registerCommand({
             command: 'Show command panel',
             description: '显示控制面板',

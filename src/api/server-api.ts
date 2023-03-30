@@ -427,7 +427,7 @@ export async function getSysFonts() {
     return parseBody(request(url, null));
 }
 
-export async function getFile(path) {
+export async function getFile(path: string, type: 'json' | 'text' = 'text') {
     const response = await fetch('/api/file/getFile', {
         method: 'POST',
         headers: {
@@ -437,8 +437,15 @@ export async function getFile(path) {
             path: path,
         }),
     });
-    if (response.status === 200) return response;
-    else return null;
+    if (response.status === 200) {
+        if (type === 'text') {
+            return await response.text();
+        }
+        if (type === 'json') {
+            return (await response.json()).data;
+        }
+    }
+    return null;
 }
 
 export async function putFile(path, filedata, isDir = false, modTime = Date.now()) {
@@ -457,6 +464,36 @@ export async function putFile(path, filedata, isDir = false, modTime = Date.now(
         },
     });
     if (response.status === 200) return await response.json();
+    else return null;
+}
+
+export async function readDir(path: string) {
+    const response = await fetch('/api/file/readDir', {
+        method: 'POST',
+        headers: {
+            Authorization: `Token ${config().token}`,
+        },
+        body: JSON.stringify({
+            path: path,
+        }),
+    });
+    if (response.status === 200) {
+        return (await response.json()).data;
+    };
+    return null;
+}
+
+export async function removeFile(path) {
+    const response = await fetch('/api/file/removeFile', {
+        method: 'POST',
+        headers: {
+            Authorization: `Token ${config().token}`,
+        },
+        body: JSON.stringify({
+            path: path,
+        }),
+    });
+    if (response.status === 200) return;
     else return null;
 }
 

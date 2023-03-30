@@ -62,7 +62,6 @@ export class Dialog {
     }
 
     static destroyAll() {
-        console.log('fuck');
         window.siyuan.dialogs.forEach((p) => p.destroy());
     }
 

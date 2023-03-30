@@ -1,10 +1,7 @@
 import { Notification } from '../internal/classes/notification';
 import LoggerFactory, { LogLevelEnum } from 'zhi-log';
-import type { Stats } from 'fs';
-import { PROCESS_ENV } from '../config';
+import { FileClient } from '@/api/file-api';
 
-const path = require('path');
-const fs = require('fs');
 const factory = LoggerFactory.customLogFactory(LogLevelEnum.LOG_LEVEL_INFO, 'PluginSystem');
 const pluginSystemLogger = factory.getLogger('plugin system');
 
@@ -23,9 +20,10 @@ export const error = (...p) => pluginSystemLogger.error(...p);
 export const reloadWindow = () => window.location.reload();
 
 export const getCrossPlatformAppDataFolder = () => {
+    const PROCESS_ENV = window.process?.env;
     let configFilePath;
     if (process.platform === 'darwin') {
-        configFilePath = path.join(PROCESS_ENV.HOME, '/Library/Application Support');
+        configFilePath = `${PROCESS_ENV.HOME}/Library/Application Support`;
     } else if (process.platform === 'win32') {
         // Roaming包含在APPDATA中了
         configFilePath = PROCESS_ENV.APPDATA;
@@ -45,14 +43,14 @@ export const genUUID = () =>
     );
 
 export function isDir(p: string) {
-    return fs.statSync(p).isDirectory();
+    throw new Error('can not get dir by path:' + p);
 }
 
-export function isExists(p: string) {
+export async function isExists(p: string) {
     try {
-        fs.statSync(p) as Stats;
-        return true;
-    } catch (e) {
+        const res = await FileClient.getInstanceApi().fileApi.getFile(p);
+        return res !== null;
+    } catch {
         return false;
     }
 }

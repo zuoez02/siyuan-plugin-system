@@ -51,7 +51,6 @@ export interface IStorageManager {
 
 export interface ISystemManager {
     saveToLocal(p: string, content: string): Promise<void>;
-    createFile(p: string): Promise<string>;
     localCacheInit(): Promise<void>;
     delayAutoUpgrade(): void;
     tryUpgrade(): Promise<void>;
