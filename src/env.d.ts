@@ -18,5 +18,6 @@ declare global {
         pluginSystemVersion?: string;
         pluginSystemIocContainer?: any;
         pluginSystemSource?: string;
+        Lute: any;
     }
 }

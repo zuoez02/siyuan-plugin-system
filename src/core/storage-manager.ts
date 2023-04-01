@@ -139,6 +139,11 @@ export class StorageManager implements IStorageManager {
         }
     }
 
+    public async uninstallPlugin(pluginKey: string): Promise<void> {
+        await FileClient.getInstanceApi().fileApi.removeFile(`/data/plugins/${pluginKey}`);
+        await FileClient.getInstanceApi().fileApi.removeFile(`/data/plugins//.storage/${pluginKey}`);
+    }
+
     private async addPluginStorageFolderIfNotExist(pluginKey: string) {
         const folder = `/data/plugins/.storage/${pluginKey}`;
         await FileClient.getInstanceApi().fileApi.putFile(folder, null, true);

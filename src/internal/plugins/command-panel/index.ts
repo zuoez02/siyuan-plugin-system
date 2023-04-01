@@ -2,6 +2,7 @@ import { Plugin } from '@/api/plugin';
 import { Dialog } from '@/internal/classes';
 import { Shortcut } from '@/core/shortcut';
 import CommandPanel__SvelteComponent_ from './command-panel.svelte';
+import { _ } from '@/util';
 
 export class CommandPanelPlugin extends Plugin {
     shortcut: Shortcut;
@@ -9,7 +10,7 @@ export class CommandPanelPlugin extends Plugin {
     onload(): void {
         this.registerCommand({
             command: 'Show command panel',
-            description: '显示控制面板',
+            description: _('show_command_panel'),
             shortcut: 'ctrl+shift+o,command+shift+o',
             callback: () => {
                 this.showPanel();

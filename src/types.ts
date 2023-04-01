@@ -16,6 +16,7 @@ export interface StorePluginManifest {
     description: string;
     author: string;
     version: string;
+    url: string;
 }
 
 export interface StorePluginStatus extends StorePluginManifest {
@@ -31,6 +32,8 @@ export interface PluginManifest {
     enabled?: boolean;
     hidden?: boolean;
     description?: string;
+    url?: string;
+    author?: string;
     plugin?: new (...args: any) => IPlugin;
 }
 
@@ -47,6 +50,7 @@ export interface IStorageManager {
     setSafeModeEnabled(enabled: boolean): Promise<void>;
     setPluginStorage(pluginKey: string, filename: string, content: any): Promise<void>;
     getPluginStorage(pluginKey: string, filename: string): Promise<Response>;
+    uninstallPlugin(key: string): Promise<void>;
 }
 
 export interface ISystemManager {
@@ -165,4 +169,17 @@ export interface INoticationOption {
     type: 'error' | 'info';
     message: string;
     timeout?: number;
+}
+
+export interface IStore {
+    init(): Promise<void>;
+    getStoreUrl(): string;
+    getPlugins(): StorePluginManifest[];
+    loadPlugins(): Promise<StorePluginManifest[]>;
+    getPluginsWithStatus(): StorePluginManifest[];
+    loadPluginsFromUrl(): Promise<void>;
+    getPluginByUrl(url: string): Promise<{ manifest: string; mainJs: string }>;
+    getPluginManifest(url: string): Promise<PluginManifest>;
+    getPluginReadme(url: string): Promise<string>;
+    downloadPlugin(key: string): Promise<any>;
 }

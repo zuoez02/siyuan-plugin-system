@@ -1,4 +1,5 @@
 import { serverApi } from '@/api';
+import { log } from '@/util';
 import { Stats } from 'fs';
 import semver from 'semver';
 
@@ -13,6 +14,7 @@ export class FileClient {
         readDir: (path: string) => Promise<Array<{ isDir: boolean; name: string }>>;
         getFile: (path: string, type?: 'json' | 'text') => Promise<any>;
         putFile: (path, filedata, isDir?: boolean, modTime?: number) => Promise<any>;
+        removeFile: (path: string) => Promise<void>;
     };
 
     private constructor() {
@@ -75,11 +77,27 @@ export class FileClient {
             });
         },
         putFile: serverApi.putFile,
+        removeFile(f: string): Promise<void> {
+            return new Promise((resolve, reject) => {
+                const fs = window.require('fs');
+                const path = window.require('path');
+                const SIYUAN_WORKSPACE = path.join(window.siyuan.config.system.dataDir, '..');
+                const p = path.join(SIYUAN_WORKSPACE, f);
+                log('Remove files from', p);
+                fs.rm(p, { recursive: true, force: true }, (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(null);
+                });
+            });
+        },
     };
 
     serverApi = {
         readDir: serverApi.readDir,
         getFile: serverApi.getFile,
         putFile: serverApi.putFile,
+        removeFile: serverApi.removeFile,
     };
 }

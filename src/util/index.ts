@@ -2,6 +2,9 @@ import { Notification } from '../internal/classes/notification';
 import LoggerFactory, { LogLevelEnum } from 'zhi-log';
 import { FileClient } from '@/api/file-api';
 
+import zh_CN from '@/i18n/zh_CN.json';
+import en_US from '@/i18n/en_US.json';
+
 const factory = LoggerFactory.customLogFactory(LogLevelEnum.LOG_LEVEL_INFO, 'PluginSystem');
 const pluginSystemLogger = factory.getLogger('plugin system');
 
@@ -69,3 +72,15 @@ export const showInfoMessage = (message: string, timeout?: number) => new Notifi
 export const showErrorMessage = (message: string, timeout?: number) => new Notification({ type: 'error', message, timeout }).show();
 
 export const getLogger = (name: string) => factory.getLogger(name);
+
+const langs = {
+    zh_CN,
+    en_US,
+};
+const currentLang = window.siyuan.config.lang;
+
+const lang = langs[currentLang] || en_US;
+
+export const _ = (v: string): string => {
+    return lang[v] || 'not defined';
+};

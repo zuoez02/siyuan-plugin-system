@@ -3,6 +3,7 @@
     import { Dialog } from '../../classes/dialog';
     import { onMount } from 'svelte';
     import { container } from '../../../container';
+    import { _ } from '@/util';
     const commandManager = container.get<ICommandManager>('CommandManager');
 
     let commands: Command[] = [];
@@ -103,7 +104,7 @@
                 <span class="command-plugin">{com.pluginName} {':'} </span>
                 <span class="command-description">{com.command} {com.description || ''}</span>
                 {#if com.shortcut}
-                    <div class="command-shortcut">快捷键: {com.shortcut}</div>
+                    <div class="command-shortcut">{_('shortcut')}: {com.shortcut}</div>
                 {/if}
             </div>
         {/each}

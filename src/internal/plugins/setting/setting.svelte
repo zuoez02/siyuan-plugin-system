@@ -1,23 +1,24 @@
 <script lang="ts">
+    import { _ } from '@/util';
     import SettingCommon from './setting-common.svelte';
     import SettingList from './setting-list.svelte';
     import SettingStore from './setting-store.svelte';
     const menus = [
         {
             key: 'common',
-            name: '通用配置',
+            name: _('menu_common'),
             icon: '#iconSettings',
             component: SettingCommon,
         },
         {
             key: 'list',
-            name: '插件列表',
+            name: _('menu_list'),
             icon: '#iconSettings',
             component: SettingList,
         },
         {
             key: 'store',
-            name: '插件商店',
+            name: _('menu_store'),
             icon: '#iconSettings',
             component: SettingStore,
         },

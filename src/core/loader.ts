@@ -8,6 +8,7 @@ import { TYPES } from '../config';
 import { container } from '@/container';
 import { IStorageManager } from '../types';
 import { error } from '../util';
+import axios from 'axios';
 
 let components: { [key: string]: any };
 
@@ -136,6 +137,7 @@ export class PluginLoader implements IPluginLoader {
     public generateRequiredModules() {
         components = {
             siyuan: api,
+            axios: axios,
         };
     }
 

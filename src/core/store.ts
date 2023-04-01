@@ -1,6 +1,6 @@
 import { TYPES } from '@/config';
 import { PLUGIN_STORE_URL } from '@/core/plugin-config';
-import { IStorageManager, StorePluginManifest, StorePluginStatus } from '@/types';
+import { IStorageManager, IStore, StorePluginManifest, StorePluginStatus } from '@/types';
 import axios, { AxiosResponse } from 'axios';
 import { inject, injectable } from 'inversify';
 import { SemVer } from 'semver';
@@ -8,7 +8,7 @@ import { sleep } from '@/util';
 import { FileClient } from '@/api/file-api';
 
 @injectable()
-export class Store {
+export class Store implements IStore {
     private plugins: StorePluginManifest[];
     private pluginStatus: StorePluginStatus[];
 
@@ -64,7 +64,11 @@ export class Store {
         }
         let res: AxiosResponse;
         try {
-            res = await axios.get(storeUrl + '/plugins.json');
+            res = await axios.get(storeUrl + '/plugins.json', {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                },
+            });
         } catch (e) {
             console.error(e);
             return;
@@ -77,7 +81,7 @@ export class Store {
         }
     }
 
-    public async getPluginByUrl(url) {
+    public async getPluginByUrl(url: string) {
         return Promise.all([this.getPluginManifest(url), this.getPluginMainJs(url)]).then((value) => {
             return {
                 manifest: value[0],
@@ -91,6 +95,7 @@ export class Store {
             const manifest = await axios.get(`${url}/manifest.json`, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
                 },
             });
             return manifest.data;
@@ -107,9 +112,28 @@ export class Store {
             const res = await axios.get(`${url}/main.js`, {
                 headers: {
                     'Content-Type': 'text/plain',
+                    'Cache-Control': 'no-cache',
                 },
             });
             return res.data;
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+
+    public async getPluginReadme(key: string) {
+        // @ts-ignore
+        window.axios = axios;
+        const url = `${this.getStoreUrl()}/${key}`;
+        try {
+            const res = await axios.get(`${url}/README.md`, {
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'Cache-Control': 'no-cache',
+                },
+            });
+            return res.data as string;
         } catch (e) {
             console.error(e);
             return null;

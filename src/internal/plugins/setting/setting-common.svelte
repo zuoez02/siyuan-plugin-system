@@ -4,14 +4,15 @@
     import { container } from '@/container';
     import { TYPES } from '@/config';
     import { IPluginSystem, IStorageManager } from '@/types';
+    import { _ } from '@/util';
 
     const storageManager = container.get<IStorageManager>(TYPES.StorageManager);
     const pluginSystem = container.get<IPluginSystem>(TYPES.PluginSystem);
 
     let configs = [
         {
-            label: '安全模式',
-            tip: '关闭安全模式允许第三方插件加载',
+            label: _('safemode'),
+            tip: _('safemodetip'),
             checked: true,
             type: 'checkbox',
             onChange: (event) => {
@@ -24,8 +25,8 @@
             },
         },
         {
-            label: '自动更新',
-            tip: '从固定位置获取版本并更新本地存储的插件系统脚本',
+            label: _('autoupgrade'),
+            tip: _('autoupgradetip'),
             checked: true,
             type: 'checkbox',
             onChange: (event) => {
@@ -33,8 +34,8 @@
             },
         },
         {
-            label: '插件商店地址',
-            tip: `线上插件系统仓库地址, 默认为 ${defaultConfig.PLUGIN_STORE_URL}`,
+            label: _('store_url'),
+            tip: `${_('store_url_tip')} ${defaultConfig.PLUGIN_STORE_URL}`,
             type: 'input',
             value: storageManager.get(PLUGIN_STORE_URL),
             onChange: (event) => {
