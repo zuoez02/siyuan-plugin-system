@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
     import { container } from '@/container';
     import { TYPES } from '@/config';
     import { IPluginSystem, IStorageManager, PluginManifest } from '@/types';
@@ -17,6 +17,8 @@
         plugins = storageManager.getPlugins();
     };
 
+    const dispatcher = createEventDispatcher();
+
     const onPluginEnabledChange = (key: string) => async (event) => {
         const safeMode = storageManager.get(PLUGIN_SYSTEM_SAFE_MODE_ENABLED);
         const checked = event.target.checked;
@@ -29,6 +31,7 @@
         } else {
             pluginSystem.unloadPlugin(key);
         }
+        dispatcher('update');
     };
 
     const uninstall = async (key: string, event: MouseEvent) => {

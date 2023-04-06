@@ -2,6 +2,7 @@ export interface IPlugin {
     onload(): void;
     onunload(): void;
     registerCommand(command: IPluginCommand);
+    registerSettingRender(settingRender: SettingRender);
     loadStorage(filename: string): Promise<Response>;
     writeStorage(filename: string, content: any): Promise<void>;
 }
@@ -182,4 +183,12 @@ export interface IStore {
     getPluginManifest(url: string): Promise<PluginManifest>;
     getPluginReadme(url: string): Promise<string>;
     downloadPlugin(key: string): Promise<any>;
+}
+
+export type SettingRender = (element: HTMLElement) => void;
+
+export interface ISettingManager {
+    registerSetting(key: string, settingRender: SettingRender): void;
+    unregisterSetting(key: string): void;
+    getSettingRenders(): Array<{ key: string; value: SettingRender }>;
 }

@@ -49,10 +49,6 @@ export class InternalSettingPlugin extends Plugin {
             callback: () => window.location.reload(),
         });
     }
-
-    onunload() {
-        console.log('InternalSettingPluginUnload');
-    }
 }
 
 function showSettingDialog() {
@@ -60,7 +56,7 @@ function showSettingDialog() {
         title: _('plugin_system_setting'),
         content: '<div id="plugin-settings"></div>',
         width: '90vw',
-        height: '50vh',
+        height: '80vh',
     });
     setTimeout(() => {
         new Settings({

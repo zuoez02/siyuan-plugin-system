@@ -1,10 +1,10 @@
 import { TYPES } from '@/config';
 import { PLUGIN_STORE_URL } from '@/core/plugin-config';
 import { IStorageManager, IStore, StorePluginManifest, StorePluginStatus } from '@/types';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { inject, injectable } from 'inversify';
 import { SemVer } from 'semver';
-import { sleep } from '@/util';
+import { request, sleep } from '@/util';
 import { FileClient } from '@/api/file-api';
 
 @injectable()
@@ -20,8 +20,7 @@ export class Store implements IStore {
     public async init() {
         this.plugins = [];
         this.pluginStatus = [];
-        await this.loadPluginsFromUrl();
-        await this.storageManager.initStorage();
+        await Promise.all([this.loadPluginsFromUrl(), this.storageManager.initStorage()]);
         const plugins = this.storageManager.getPlugins();
         const storePlugins: StorePluginStatus[] = [];
         for (const plugin of this.plugins) {
@@ -64,7 +63,7 @@ export class Store implements IStore {
         }
         let res: AxiosResponse;
         try {
-            res = await axios.get(storeUrl + '/plugins.json', {
+            res = await request.get(storeUrl + '/plugins.json', {
                 headers: {
                     'Cache-Control': 'no-cache',
                 },
@@ -73,12 +72,14 @@ export class Store implements IStore {
             console.error(e);
             return;
         }
+        const req = [];
         if (Array.isArray(res.data?.plugins)) {
             for (const pluginKey of res.data?.plugins || {}) {
-                const plugin = await this.getPluginManifest(`${storeUrl}/${pluginKey}`);
-                this.plugins.push(plugin);
+                const plugin = this.getPluginManifest(`${storeUrl}/${pluginKey}`);
+                req.push(plugin);
             }
         }
+        this.plugins = await Promise.all(req);
     }
 
     public async getPluginByUrl(url: string) {
@@ -92,7 +93,7 @@ export class Store implements IStore {
 
     public async getPluginManifest(url: string) {
         try {
-            const manifest = await axios.get(`${url}/manifest.json`, {
+            const manifest = await request.get(`${url}/manifest.json`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Cache-Control': 'no-cache',
@@ -106,10 +107,8 @@ export class Store implements IStore {
     }
 
     public async getPluginMainJs(url: string) {
-        // @ts-ignore
-        window.axios = axios;
         try {
-            const res = await axios.get(`${url}/main.js`, {
+            const res = await request.get(`${url}/main.js`, {
                 headers: {
                     'Content-Type': 'text/plain',
                     'Cache-Control': 'no-cache',
@@ -123,11 +122,9 @@ export class Store implements IStore {
     }
 
     public async getPluginReadme(key: string) {
-        // @ts-ignore
-        window.axios = axios;
         const url = `${this.getStoreUrl()}/${key}`;
         try {
-            const res = await axios.get(`${url}/README.md`, {
+            const res = await request.get(`${url}/README.md`, {
                 headers: {
                     'Content-Type': 'text/plain',
                     'Cache-Control': 'no-cache',

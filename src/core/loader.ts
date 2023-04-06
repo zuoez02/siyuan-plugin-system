@@ -1,6 +1,15 @@
 import { Plugin } from '../api/plugin';
 import api from '../api';
-import { IPluginCommand, ICommandManager, IPlugin, IPluginFileManager, IPluginLoader, PluginManifest } from '../types';
+import {
+    IPluginCommand,
+    ICommandManager,
+    IPlugin,
+    IPluginFileManager,
+    IPluginLoader,
+    PluginManifest,
+    SettingRender,
+    ISettingManager,
+} from '../types';
 import { internalPlugins } from '../internal';
 import { log } from '../util';
 import { inject, injectable } from 'inversify';
@@ -119,6 +128,7 @@ export class PluginLoader implements IPluginLoader {
         }
         plugin.onunload();
         container.get<ICommandManager>(TYPES.CommandManager).unregisterCommandByPlugin(key);
+        container.get<ISettingManager>(TYPES.SettingManager).unregisterSetting(key);
         this.loadedPlugins.delete(key);
     }
 
@@ -157,6 +167,10 @@ export class PluginLoader implements IPluginLoader {
         };
         plugin.loadStorage = async (filename: string) => {
             return await sm.getPluginStorage(pluginKey, filename);
+        };
+        plugin.registerSettingRender = (settingRender: SettingRender) => {
+            const cm = container.get<ISettingManager>(TYPES.SettingManager);
+            cm.registerSetting(pluginKey, settingRender);
         };
     }
 }

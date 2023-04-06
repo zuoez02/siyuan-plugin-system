@@ -52,12 +52,17 @@ export class PluginFileManager {
             log('No plugin found in ' + '/data/plugins');
             return [];
         }
-        const result: PluginManifest[] = [];
+        const req = [];
         for (const p of plugins) {
             log('Reading plugin from filesystem: ' + p);
-            const [manifest, script] = await Promise.all([this.getManifest(`${p}/manifest.json`), this.getScript(`${p}/main.js`)]);
-            result.push({ ...manifest, script, enabled: false, key: this.getFolderName(p) });
+            const key = this.getFolderName(p);
+            const f = async () => {
+                const [manifest, script] = await Promise.all([this.getManifest(`${p}/manifest.json`), this.getScript(`${p}/main.js`)]);
+                return { ...manifest, script, enabled: false, key };
+            };
+            req.push(f());
         }
+        const result: PluginManifest[] = await Promise.all(req);
         return result || [];
     }
 

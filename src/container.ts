@@ -15,11 +15,13 @@ import {
     IShortcut,
     ICommandManager,
     IStore,
+    ISettingManager,
 } from './types';
 import { EventBus } from './core/event-bus';
 import { CommandManager } from './core/command-manager';
 import { Shortcut } from './core/shortcut';
 import { Store } from './core/store';
+import { SettingManager } from './core/setting-manager';
 
 const container = new Container();
 container.bind<IStorageManager>(TYPES.StorageManager).to(StorageManager).inSingletonScope();
@@ -31,5 +33,6 @@ container.bind<IEventBus>(TYPES.EventBus).to(EventBus);
 container.bind<IShortcut>(TYPES.Shortcut).to(Shortcut).inSingletonScope();
 container.bind<ICommandManager>(TYPES.CommandManager).to(CommandManager).inSingletonScope();
 container.bind<IStore>(TYPES.Store).to(Store).inSingletonScope();
+container.bind<ISettingManager>(TYPES.SettingManager).to(SettingManager).inSingletonScope();
 
 export { container };

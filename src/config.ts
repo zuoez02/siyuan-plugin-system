@@ -22,4 +22,5 @@ export const TYPES = {
     Shortcut: 'Shortcut',
     CommandManager: 'CommandManager',
     Store: 'Store',
+    SettingManager: 'SettingManager',
 };

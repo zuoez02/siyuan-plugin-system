@@ -30,7 +30,17 @@ class TestPlugin extends Plugin {
             callback: () => {
                 console.log('hello');
             },
-        })
+        });
+
+        this.registerSettingRender((el) => {
+            const hello = document.createElement('div');
+            hello.innerText = '????';
+            el.appendChild(hello);
+            hello.addEventListener('click', () => {
+                this.writeStorage('hello.txt', 'world' + Math.random().toFixed(2));
+                console.log('saved');
+            });
+        });
     }
 
     onunload() {

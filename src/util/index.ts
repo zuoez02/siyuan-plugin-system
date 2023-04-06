@@ -4,6 +4,7 @@ import { FileClient } from '@/api/file-api';
 
 import zh_CN from '@/i18n/zh_CN.json';
 import en_US from '@/i18n/en_US.json';
+import axios from 'axios';
 
 const factory = LoggerFactory.customLogFactory(LogLevelEnum.LOG_LEVEL_INFO, 'PluginSystem');
 const pluginSystemLogger = factory.getLogger('plugin system');
@@ -11,6 +12,15 @@ const pluginSystemLogger = factory.getLogger('plugin system');
 export const log = (...p) => {
     pluginSystemLogger.info(...p);
 };
+
+export const request = axios.create({
+    withCredentials: false,
+    headers: {
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        Expires: '0',
+    },
+});
 
 export const sleep = async (t: number) => {
     return new Promise((resolve) => {
