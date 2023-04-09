@@ -62,6 +62,7 @@ declare module 'siyuan/api/server-api' {
     export function appendBlock(parentID: any, dataType: any, data: any): Promise<any>;
     export function updateBlock(id: any, dataType: any, data: any): Promise<any>;
     export function deleteBlock(id: any): Promise<any>;
+    export function moveBlock(id: any, previousID: any, parentID: any): Promise<any>;
     export function getSysFonts(): Promise<any>;
     export function getFile(path: any): Promise<Response>;
     export function putFile(path: any, filedata: any, isDir?: boolean, modTime?: number): Promise<any>;
