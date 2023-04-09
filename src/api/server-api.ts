@@ -422,6 +422,13 @@ export async function deleteBlock(id) {
     return parseBody(request(url, { id }));
 }
 
+export async function moveBlock(id: string, previousID: string, parentID: string) {
+    let url = '/api/block/moveBlock';
+    return parseBody(
+        request(url, { id: id, previousID: previousID, parentID: parentID })
+    );
+}
+
 export async function getSysFonts() {
     let url = '/api/system/getSysFonts';
     return parseBody(request(url, null));
