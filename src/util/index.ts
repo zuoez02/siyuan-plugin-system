@@ -1,9 +1,9 @@
 import { Notification } from '../internal/classes/notification';
 import LoggerFactory, { LogLevelEnum } from 'zhi-log';
-import { FileClient } from '@/api/file-api';
+import { FileClient } from '../api/file-api';
 
-import zh_CN from '@/i18n/zh_CN.json';
-import en_US from '@/i18n/en_US.json';
+import zh_CN from '../i18n/zh_CN.json';
+import en_US from '../i18n/en_US.json';
 import axios from 'axios';
 
 const factory = LoggerFactory.customLogFactory(LogLevelEnum.LOG_LEVEL_INFO, 'PluginSystem');

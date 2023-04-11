@@ -1,5 +1,5 @@
-import { serverApi } from '@/api';
-import { log } from '@/util';
+import { serverApi } from '../api';
+import { log } from '../util';
 import { Stats } from 'fs';
 import semver from 'semver';
 

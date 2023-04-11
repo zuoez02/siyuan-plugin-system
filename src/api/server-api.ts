@@ -538,3 +538,8 @@ export async function getLocalStorage() {
     const url = '/api/storage/getLocalStorage';
     return parseBody(request(url, null));
 }
+
+export async function renderSprig(template: string) {
+    let url = '/api/template/renderSprig';
+    return parseBody(request(url, template));
+}

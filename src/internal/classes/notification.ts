@@ -1,4 +1,4 @@
-import { serverApi } from '../../api';
+import * as serverApi from '../../api/server-api';
 import { INoticationOption, INotification } from '../../types';
 
 export class Notification implements INotification {

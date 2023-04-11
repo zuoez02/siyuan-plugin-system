@@ -3,15 +3,19 @@
 declare module 'siyuan' {
     import * as serverApi from 'siyuan/api/server-api';
     import * as clientApi from 'siyuan/api/client-api';
-    import { Menu } from 'siyuan/internal/classes/menu';
+    import { Menu, MenuItem, MenuSeparator } from 'siyuan/internal/classes/menu';
     import { Dialog } from 'siyuan/internal/classes/dialog';
+    import { Notification } from 'siyuan/internal/classes/notification';
     import { Plugin } from 'siyuan/api/plugin';
-    export { clientApi, serverApi, Menu, Dialog, Plugin };
+    export { clientApi, serverApi, Menu, MenuItem, MenuSeparator, Notification, Dialog, Plugin };
     const _default: {
         clientApi: typeof clientApi;
         serverApi: typeof serverApi;
         Plugin: typeof Plugin;
         Menu: typeof Menu;
+        MenuItem: typeof MenuItem;
+        MenuSeparator: typeof MenuSeparator;
+        Notification: typeof Notification;
         Dialog: typeof Dialog;
     };
     export default _default;
@@ -62,14 +66,17 @@ declare module 'siyuan/api/server-api' {
     export function appendBlock(parentID: any, dataType: any, data: any): Promise<any>;
     export function updateBlock(id: any, dataType: any, data: any): Promise<any>;
     export function deleteBlock(id: any): Promise<any>;
-    export function moveBlock(id: any, previousID: any, parentID: any): Promise<any>;
+    export function moveBlock(id: string, previousID: string, parentID: string): Promise<any>;
     export function getSysFonts(): Promise<any>;
-    export function getFile(path: any): Promise<Response>;
+    export function getFile(path: string, type?: 'json' | 'text'): Promise<any>;
     export function putFile(path: any, filedata: any, isDir?: boolean, modTime?: number): Promise<any>;
+    export function readDir(path: string): Promise<any>;
+    export function removeFile(path: any): Promise<any>;
     export function pushMsg(message?: any, text?: any, timeout?: number): Promise<any>;
     export function pushErrMsg(message?: any, text?: any, timeout?: number): Promise<any>;
     export function setStorageVal(key: string, val: any): Promise<any>;
     export function getLocalStorage(): Promise<any>;
+    export function renderSprig(template: string): Promise<any>;
 }
 
 declare module 'siyuan/api/client-api' {
@@ -134,13 +141,22 @@ declare module 'siyuan/internal/classes/dialog' {
     }
 }
 
+declare module 'siyuan/internal/classes/notification' {
+    import { INoticationOption, INotification } from 'siyuan/types';
+    export class Notification implements INotification {
+        constructor(option: INoticationOption);
+        show(): void;
+    }
+}
+
 declare module 'siyuan/api/plugin' {
-    import { IPlugin, IPluginCommand } from 'siyuan/types';
+    import { IPlugin, IPluginCommand, SettingRender } from 'siyuan/types';
     export class Plugin implements IPlugin {
         _id: string;
         onload(): void;
         onunload(): void;
         registerCommand(command: IPluginCommand): void;
+        registerSettingRender(settingRender: SettingRender): void;
         loadStorage(filename: string): Promise<any>;
         writeStorage(filename: string, content: any): Promise<void>;
     }
@@ -151,6 +167,7 @@ declare module 'siyuan/types' {
         onload(): void;
         onunload(): void;
         registerCommand(command: IPluginCommand): any;
+        registerSettingRender(settingRender: SettingRender): any;
         loadStorage(filename: string): Promise<Response>;
         writeStorage(filename: string, content: any): Promise<void>;
     }
@@ -163,6 +180,7 @@ declare module 'siyuan/types' {
         description: string;
         author: string;
         version: string;
+        url: string;
     }
     export interface StorePluginStatus extends StorePluginManifest {
         isExist: boolean;
@@ -176,6 +194,8 @@ declare module 'siyuan/types' {
         enabled?: boolean;
         hidden?: boolean;
         description?: string;
+        url?: string;
+        author?: string;
         plugin?: new (...args: any) => IPlugin;
     }
     export interface IStorageManager {
@@ -191,10 +211,10 @@ declare module 'siyuan/types' {
         setSafeModeEnabled(enabled: boolean): Promise<void>;
         setPluginStorage(pluginKey: string, filename: string, content: any): Promise<void>;
         getPluginStorage(pluginKey: string, filename: string): Promise<Response>;
+        uninstallPlugin(key: string): Promise<void>;
     }
     export interface ISystemManager {
         saveToLocal(p: string, content: string): Promise<void>;
-        createFile(p: string): Promise<string>;
         localCacheInit(): Promise<void>;
         delayAutoUpgrade(): void;
         tryUpgrade(): Promise<void>;
@@ -293,6 +313,30 @@ declare module 'siyuan/types' {
         type: 'error' | 'info';
         message: string;
         timeout?: number;
+    }
+    export interface IStore {
+        init(): Promise<void>;
+        getStoreUrl(): string;
+        getPlugins(): StorePluginManifest[];
+        loadPlugins(): Promise<StorePluginManifest[]>;
+        getPluginsWithStatus(): StorePluginManifest[];
+        loadPluginsFromUrl(): Promise<void>;
+        getPluginByUrl(url: string): Promise<{
+            manifest: string;
+            mainJs: string;
+        }>;
+        getPluginManifest(url: string): Promise<PluginManifest>;
+        getPluginReadme(url: string): Promise<string>;
+        downloadPlugin(key: string): Promise<any>;
+    }
+    export type SettingRender = (element: HTMLElement) => void;
+    export interface ISettingManager {
+        registerSetting(key: string, settingRender: SettingRender): void;
+        unregisterSetting(key: string): void;
+        getSettingRenders(): Array<{
+            key: string;
+            value: SettingRender;
+        }>;
     }
 }
 
