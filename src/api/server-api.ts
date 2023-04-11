@@ -362,6 +362,11 @@ export async function render(data) {
     return parseBody(request(url, data));
 }
 
+export async function renderSprig(template: string) {
+    let url = '/api/template/renderSprig';
+    return parseBody(request(url, template));
+}
+
 export async function insertBlock(previousID, dataType, data) {
     let url = '/api/block/insertBlock';
     return parseBody(
