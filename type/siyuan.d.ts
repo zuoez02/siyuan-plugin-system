@@ -77,6 +77,7 @@ declare module 'siyuan/api/server-api' {
     export function setStorageVal(key: string, val: any): Promise<any>;
     export function getLocalStorage(): Promise<any>;
     export function renderSprig(template: string): Promise<any>;
+    export function getBazzarWidget(): Promise<any>;
 }
 
 declare module 'siyuan/api/client-api' {
