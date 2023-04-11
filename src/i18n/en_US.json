@@ -27,5 +27,6 @@
     "reload_window": "Reload current window",
     "shortcut": "Shortcut",
     "show_command_panel": "Show command panel",
-    "uninstall": "Uninstall"
+    "uninstall": "Uninstall",
+    "new_version_widget": "New version plugin system found in Bazzar, please upgrade and reload."
 }

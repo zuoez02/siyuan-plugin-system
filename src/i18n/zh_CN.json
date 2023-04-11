@@ -27,5 +27,6 @@
     "reload_window": "重载当前窗口",
     "shortcut": "快捷键",
     "show_command_panel": "显示控制面板",
-    "uninstall": "卸载"
+    "uninstall": "卸载",
+    "new_version_widget": "集市发现新版本的插件系统,请前往更新并重载"
 }

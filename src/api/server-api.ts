@@ -543,3 +543,8 @@ export async function renderSprig(template: string) {
     let url = '/api/template/renderSprig';
     return parseBody(request(url, template));
 }
+
+export async function getBazzarWidget() {
+    const url = '/api/bazaar/getBazaarWidget';
+    return parseBody(request(url, null));
+}
