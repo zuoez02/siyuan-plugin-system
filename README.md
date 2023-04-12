@@ -4,6 +4,8 @@
 
 A plugin system based on 'Code Snippet' function in Siyuan, which a local note system like 'Notion'.
 
+![Stargazers over time](https://starchart.cc/zuoez02/siyuan-plugin-system.svg)
+
 ## Install
 Add the [`load.js`](./load.js) content to JS snippets in setting and enable it. Reload the Siyuan to finish auto install.
 
