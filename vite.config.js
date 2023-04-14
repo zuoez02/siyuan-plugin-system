@@ -45,22 +45,19 @@ export default defineConfig({
         assetsDir: '',
         emptyOutDir: false,
         lib: {
-            entry: 'src/index.ts',
-            formats: ['iife'],
+            entry: process.env.TYPE === 'iife' ? 'src/index.ts' : 'src/export',
+            formats: process.env.TYPE === 'iife' ? ['iife'] : ['es'],
             name: 'siyuan-plugin-system',
-            fileName: () => 'main.js',
+            fileName: (t, v) => t === 'iife' ? 'main.js' : 'main.esm.js',
         },
         outDir: '',
         rollupOptions: {
-            input: {
-                main: resolve(__dirname, 'src', 'index.ts'),
-            },
             output: {
                 name: 'main',
             },
         },
         //构建后是否生成 source map 文件
-        sourcemap: false,
+        sourcemap: 'inline',
         minify: 'terser', //terser 构建后文件体积更小
     },
 });

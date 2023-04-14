@@ -24,15 +24,15 @@
                 }
             },
         },
-        {
-            label: _('autoupgrade'),
-            tip: _('autoupgradetip'),
-            checked: true,
-            type: 'checkbox',
-            onChange: (event) => {
-                storageManager.set(PLUGIN_SYSTEM_AUTO_UPDATE, event.target.checked);
-            },
-        },
+        // {
+        //     label: _('autoupgrade'),
+        //     tip: _('autoupgradetip'),
+        //     checked: true,
+        //     type: 'checkbox',
+        //     onChange: (event) => {
+        //         storageManager.set(PLUGIN_SYSTEM_AUTO_UPDATE, event.target.checked);
+        //     },
+        // },
         {
             label: _('store_url'),
             tip: `${_('store_url_tip')} ${defaultConfig.PLUGIN_STORE_URL}`,

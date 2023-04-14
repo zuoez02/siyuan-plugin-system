@@ -76,7 +76,7 @@ declare module 'siyuan/api/server-api' {
     export function pushErrMsg(message?: any, text?: any, timeout?: number): Promise<any>;
     export function setStorageVal(key: string, val: any): Promise<any>;
     export function getLocalStorage(): Promise<any>;
-    export function renderSprig(template: string): Promise<any>;
+    export function renderSprig(sprig: string): Promise<any>;
     export function getBazzarWidget(): Promise<any>;
 }
 
@@ -102,6 +102,7 @@ declare module 'siyuan/internal/classes/menu' {
         bind?: (element: HTMLElement) => void;
     }
     export class Menu {
+        menu: any;
         constructor(id: string);
         addItem(item: MenuItem): this;
         addSeparator(): this;

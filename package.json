@@ -1,12 +1,15 @@
 {
-  "name": "siyuan-plugin-system",
-  "version": "0.7.0",
+  "name": "siyuan-petal",
+  "version": "0.7.1",
   "type": "module",
+  "main": "main.esm.js",
+  "types": "type.d.ts",
+  "license": "AGPL-v3",
   "scripts": {
-    "build": "vite build",
+    "build": "TYPE=iife vite build && TYPE=esm vite build && npm run type:build",
     "version": "node tools/version.cjs",
     "dev": "vite build --watch",
-    "type:build": "tsc src/api.ts src/index.d.ts -d --emitDeclarationOnly --esModuleInterop --resolveJsonModule --outdir temp && node tools/bundle.cjs",
+    "type:build": "tsc src/api.ts src/index.d.ts -d --emitDeclarationOnly --esModuleInterop --resolveJsonModule --outdir temp && node tools/bundle.cjs && rm -rf temp/",
     "type:clean": "rm -rf temp/ type/"
   },
   "devDependencies": {
@@ -26,9 +29,7 @@
     "terser": "^5.16.5",
     "typescript": "^4.9.5",
     "vite-plugin-css-injected-by-js": "^3.1.0",
-    "vite-plugin-eslint": "^1.8.1"
-  },
-  "dependencies": {
+    "vite-plugin-eslint": "^1.8.1",
     "@microsoft/api-extractor": "^7.34.4",
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
     "@types/sanitize-filename": "^1.6.3",

@@ -1,5 +1,3 @@
-const menu = window.siyuan?.menus?.menu;
-
 export interface IMenuItemOption {
     label?: string;
     click?: (element: HTMLElement) => void;
@@ -16,10 +14,14 @@ export interface IMenuItemOption {
 }
 
 export class Menu {
+    menu: any;
+
     constructor(id: string) {
+        const menu = window.siyuan?.menus?.menu;
         if (!menu) {
             throw Error('Siyuan internal menu not found!');
         }
+        this.menu = menu;
         if (!id) {
             throw Error('Menu must has an id, got empty or undefined!');
         }
@@ -28,7 +30,7 @@ export class Menu {
     }
 
     addItem(item: MenuItem) {
-        menu.append(item.element);
+        this.menu.append(item.element);
         return this;
     }
 
@@ -38,17 +40,17 @@ export class Menu {
     }
 
     showAtMouseEvent(event: MouseEvent) {
-        menu.popup({ x: event.clientX, y: event.clientY });
+        this.menu.popup({ x: event.clientX, y: event.clientY });
         return this;
     }
 
     showAtPosition(position: { x: number; y: number }) {
-        menu.popup({ x: position.x, y: position.y });
+        this.menu.popup({ x: position.x, y: position.y });
         return this;
     }
 
     close() {
-        menu.remove();
+        this.menu.remove();
     }
 }
 

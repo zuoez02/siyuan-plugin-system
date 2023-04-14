@@ -87,10 +87,7 @@ const langs = {
     zh_CN,
     en_US,
 };
-const currentLang = window.siyuan.config.lang;
-
-const lang = langs[currentLang] || en_US;
 
 export const _ = (v: string): string => {
-    return lang[v] || 'not defined';
+    return langs[window.siyuan.config.lang][v] || 'not defined';
 };
